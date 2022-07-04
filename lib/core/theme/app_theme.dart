@@ -13,9 +13,11 @@ class AppTheme {
       ),
       textTheme: ThemeData.light().textTheme.copyWith(
         labelLarge: const TextStyle(
-            fontFamily: 'OpenSans',fontSize: 25, fontWeight: FontWeight.bold, color: Colors.black),
+            fontFamily: 'OpenSans',fontSize: 30, fontWeight: FontWeight.bold, color: Colors.black),
         labelMedium: const TextStyle(
             fontFamily: 'OpenSans',fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+        labelSmall: const TextStyle(
+            fontFamily: 'OpenSans',fontSize: 13, fontWeight: FontWeight.normal, color: Colors.black),
       ));
   static ThemeData get darkTheme => ThemeData.dark().copyWith(
       colorScheme: const ColorScheme.light(
@@ -31,5 +33,7 @@ class AppTheme {
             fontFamily: 'OpenSans',fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white),
         labelMedium: const TextStyle(
             fontFamily: 'OpenSans',fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+        labelSmall: const TextStyle(
+            fontFamily: 'OpenSans',fontSize: 13, fontWeight: FontWeight.normal, color: Colors.white),
       ));
 }
