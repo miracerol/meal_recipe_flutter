@@ -1,26 +1,20 @@
+import 'package:json_annotation/json_annotation.dart';
+part 'category_model.g.dart';
+@JsonSerializable()
 class Category {
   List<Categories>? categories;
 
   Category({this.categories});
 
-  Category.fromJson(Map<String, dynamic> json) {
-    if (json['categories'] != null) {
-      categories = <Categories>[];
-      json['categories'].forEach((v) {
-        categories!.add(new Categories.fromJson(v));
-      });
-    }
+  factory Category.fromJson(Map<String, dynamic> json) {
+    return _$CategoryFromJson(json);
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.categories != null) {
-      data['categories'] = this.categories!.map((v) => v.toJson()).toList();
-    }
-    return data;
+    return _$CategoryToJson(this);
   }
 }
-
+@JsonSerializable()
 class Categories {
   String? idCategory;
   String? strCategory;
@@ -33,19 +27,11 @@ class Categories {
         this.strCategoryThumb,
         this.strCategoryDescription});
 
-  Categories.fromJson(Map<String, dynamic> json) {
-    idCategory = json['idCategory'];
-    strCategory = json['strCategory'];
-    strCategoryThumb = json['strCategoryThumb'];
-    strCategoryDescription = json['strCategoryDescription'];
+  factory Categories.fromJson(Map<String, dynamic> json) {
+    return _$CategoriesFromJson(json);
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['idCategory'] = this.idCategory;
-    data['strCategory'] = this.strCategory;
-    data['strCategoryThumb'] = this.strCategoryThumb;
-    data['strCategoryDescription'] = this.strCategoryDescription;
-    return data;
+    return _$CategoriesToJson(this);
   }
 }

@@ -17,7 +17,7 @@ class AppTheme {
         labelMedium: const TextStyle(
             fontFamily: 'OpenSans',fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
         labelSmall: const TextStyle(
-            fontFamily: 'OpenSans',fontSize: 13, fontWeight: FontWeight.normal, color: Colors.black),
+            fontFamily: 'OpenSans',fontSize: 13, fontWeight: FontWeight.bold, color: Colors.black),
       ));
   static ThemeData get darkTheme => ThemeData.dark().copyWith(
       colorScheme: const ColorScheme.light(
@@ -26,7 +26,7 @@ class AppTheme {
         error: Color(0xffef0086),
       ),
       appBarTheme: const AppBarTheme(
-        backgroundColor: Colors.black,
+        backgroundColor: Color(0xff590035),
       ),
       textTheme: ThemeData.dark().textTheme.copyWith(
         labelLarge: const TextStyle(

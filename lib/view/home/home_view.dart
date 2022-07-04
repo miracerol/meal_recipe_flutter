@@ -1,5 +1,11 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:meal_recipe_flutter/model/category/category_model.dart';
+import 'package:meal_recipe_flutter/service/meal_service.dart';
+import 'package:provider/provider.dart';
+
+import '../../viewModel/model_provider.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -10,18 +16,34 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var textEditingController = TextEditingController();
-    return Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: buildAppBar(textEditingController),
-        body: Column(
-          children: const [
-            HorizontalList(title: "Categories"),
-            HorizontalList(title: "Area"),
-            HomeSmallList(title: "Ingredients",)
-          ],
-        ));
+    return ChangeNotifierProvider<ModelProvider>(
+        create: (context) => ModelProvider(MealService(Dio(
+            BaseOptions(baseUrl: 'https://www.themealdb.com/api/json/v1/1/')))),
+        builder: (context, child) {
+          return Scaffold(
+              resizeToAvoidBottomInset: false,
+              appBar: buildAppBar(textEditingController),
+              body: Column(
+                children: [
+                  HorizontalList(
+                      title: "Categories",
+                      items: context.watch<ModelProvider>().resources),
+                  HorizontalList(
+                      title: "Area",
+                      items: context.watch<ModelProvider>().resources),
+                  const HomeSmallList(
+                    title: "Ingredients",
+                  )
+                ],
+              ));
+        });
   }
 
   AppBar buildAppBar(TextEditingController textEditingController) {
@@ -92,27 +114,35 @@ class HomeSmallList extends StatelessWidget {
   }
 }
 
-class HorizontalList extends StatelessWidget {
+class HorizontalList extends StatefulWidget {
   const HorizontalList({
     required String title,
+    required List<Categories> items,
     Key? key,
   })  : _title = title,
+        itemList = items,
         super(
           key: key,
         );
   final String _title;
+  final List<Categories> itemList;
 
+  @override
+  State<HorizontalList> createState() => _HorizontalListState();
+}
+
+class _HorizontalListState extends State<HorizontalList> {
   @override
   Widget build(BuildContext context) {
     return Flexible(
       flex: 3,
       child: Column(
         children: [
-          HomeTitle(title: _title),
+          HomeTitle(title: widget._title),
           Expanded(
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: 10,
+              itemCount: widget.itemList.length,
               itemBuilder: (context, index) {
                 return SizedBox(
                   width: MediaQuery.of(context).size.width * 0.3,
@@ -124,16 +154,18 @@ class HorizontalList extends StatelessWidget {
                       child: Column(
                         children: [
                           Image.network(
-                            'https://tahititourisme.com/wp-content/uploads/2020/05/Featured-Image-700-x-700-px-1-1.png',
+                            widget.itemList[index].strCategoryThumb ?? "",
                             fit: BoxFit.fitWidth,
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(1.0),
-                            child: Center(
-                              child: AutoSizeText(
-                                '$_title $index',
-                                style: Theme.of(context).textTheme.labelSmall,
-                                maxLines: 2,
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.all(1.0),
+                              child: Center(
+                                child: AutoSizeText(
+                                  '${widget.itemList[index].strCategory}',
+                                  style: Theme.of(context).textTheme.labelSmall,
+                                  maxLines: 2,
+                                ),
                               ),
                             ),
                           )

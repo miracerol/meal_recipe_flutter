@@ -11,18 +11,18 @@ abstract class IMealService{
   IMealService(this.dio);
   final Dio dio;
 
-  Future<List<Category>?> fetchCategories();
+  Future<Category?> fetchCategories();
 }
 
 class MealService extends IMealService {
   MealService(Dio dio) : super(dio);
   @override
-  Future<List<Category>?> fetchCategories() async {
+  Future<Category?> fetchCategories() async {
     final response = await dio.get('/categories.php');
     if (response.statusCode == HttpStatus.ok) {
       final jsonBody = response.data;
-      if (jsonBody is List) {
-        return jsonBody.map((json) => Category.fromJson(json)).toList();
+      if (jsonBody is Map<String, dynamic>) {
+        return Category.fromJson(jsonBody);
       }
     }
     return null;
