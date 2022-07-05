@@ -3,7 +3,7 @@ part 'area_model.g.dart';
 
 @JsonSerializable()
 class Area {
-  List<Meals>? meals;
+  List<MealsA>? meals;
 
   Area({this.meals});
 
@@ -16,12 +16,12 @@ class Area {
   }
 }
 @JsonSerializable()
-class Meals {
+class MealsA {
   String? strArea;
 
-  Meals({this.strArea});
+  MealsA({this.strArea});
 
-  factory Meals.fromJson(Map<String, dynamic> json) {
+  factory MealsA.fromJson(Map<String, dynamic> json) {
     return _$MealsFromJson(json);
   }
 

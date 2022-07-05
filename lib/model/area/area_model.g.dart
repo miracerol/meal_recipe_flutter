@@ -8,7 +8,7 @@ part of 'area_model.dart';
 
 Area _$AreaFromJson(Map<String, dynamic> json) => Area(
       meals: (json['meals'] as List<dynamic>?)
-          ?.map((e) => Meals.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => MealsA.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
@@ -16,10 +16,10 @@ Map<String, dynamic> _$AreaToJson(Area instance) => <String, dynamic>{
       'meals': instance.meals,
     };
 
-Meals _$MealsFromJson(Map<String, dynamic> json) => Meals(
+MealsA _$MealsFromJson(Map<String, dynamic> json) => MealsA(
       strArea: json['strArea'] as String?,
     );
 
-Map<String, dynamic> _$MealsToJson(Meals instance) => <String, dynamic>{
+Map<String, dynamic> _$MealsToJson(MealsA instance) => <String, dynamic>{
       'strArea': instance.strArea,
     };

@@ -5,12 +5,15 @@ import 'package:meal_recipe_flutter/model/ingredient/ingredient_model.dart';
 import 'package:meal_recipe_flutter/model/searchItem/search_item_model.dart';
 import 'package:meal_recipe_flutter/service/meal_service.dart';
 
+import '../model/meal/meal_model.dart';
+
 class ModelProvider extends ChangeNotifier {
   final IMealService mealService;
   List<Categories> resourcesCategory = [];
-  List<Meals> resourcesArea = [];
+  List<MealsA> resourcesArea = [];
   List<MealsI> resourcesIngredient = [];
   List<ItemS> resourcesSearchItem = [];
+  List<Meals> resourcesMeal = [];
   bool isLoading = false;
 
   void _changeLoading() {
@@ -24,6 +27,7 @@ class ModelProvider extends ChangeNotifier {
     // 2 => areas
     // 3 => ingredients
     // 4 => searchItem
+    // 5 => meal
     switch (model) {
       case 0:
         _fetchAll();
@@ -39,6 +43,9 @@ class ModelProvider extends ChangeNotifier {
         break;
       case 4:
         _fetchSearchItems(type, name);
+        break;
+      case 5:
+        _fetchMeals(type);
         break;
     }
   }
@@ -73,6 +80,12 @@ class ModelProvider extends ChangeNotifier {
   Future<void> _fetchSearchItems(String type, String name) async {
     _changeLoading();
     resourcesSearchItem = (await mealService.fetchSearchItems(type,name))?.meals ?? [];
+    _changeLoading();
+  }
+
+  Future<void> _fetchMeals(String type) async {
+    _changeLoading();
+    resourcesMeal = (await mealService.fetchMeal(type))?.meals ?? [];
     _changeLoading();
   }
 }

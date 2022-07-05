@@ -183,7 +183,7 @@ class _HorizontalListState extends State<HorizontalList> {
                                 child: AutoSizeText(
                                   widget.itemList[index] is Categories
                                       ? widget.itemList[index].strCategory
-                                      : widget.itemList[index] is Meals
+                                      : widget.itemList[index] is MealsA
                                           ? widget.itemList[index].strArea ?? ""
                                           : "",
                                   style: Theme.of(context).textTheme.labelSmall,
