@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:meal_recipe_flutter/model/category/category_model.dart';
 import 'package:meal_recipe_flutter/model/area/area_model.dart';
 import 'package:meal_recipe_flutter/model/ingredient/ingredient_model.dart';
+import 'package:meal_recipe_flutter/model/searchItem/search_item_model.dart';
 import 'package:meal_recipe_flutter/service/meal_service.dart';
 
 class ModelProvider extends ChangeNotifier {
@@ -9,6 +10,7 @@ class ModelProvider extends ChangeNotifier {
   List<Categories> resourcesCategory = [];
   List<Meals> resourcesArea = [];
   List<MealsI> resourcesIngredient = [];
+  List<ItemS> resourcesSearchItem = [];
   bool isLoading = false;
 
   void _changeLoading() {
@@ -16,12 +18,12 @@ class ModelProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  ModelProvider(this.mealService, int model) {
+  ModelProvider(this.mealService, int model, [String type = "", String name =""]) {
     // 0 => all
     // 1 => categories
     // 2 => areas
     // 3 => ingredients
-    // 4 => recipes
+    // 4 => searchItem
     switch (model) {
       case 0:
         _fetchAll();
@@ -35,9 +37,9 @@ class ModelProvider extends ChangeNotifier {
       case 3:
         _fetchIngredients();
         break;
-      // case 4:
-      //   _fetchRecipes();
-      //   break;
+      case 4:
+        _fetchSearchItems(type, name);
+        break;
     }
   }
 
@@ -65,6 +67,12 @@ class ModelProvider extends ChangeNotifier {
     _fetchAreas();
     _fetchIngredients();
 
+    _changeLoading();
+  }
+
+  Future<void> _fetchSearchItems(String type, String name) async {
+    _changeLoading();
+    resourcesSearchItem = (await mealService.fetchSearchItems(type,name))?.meals ?? [];
     _changeLoading();
   }
 }

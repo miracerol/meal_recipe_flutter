@@ -233,7 +233,7 @@ enum FetchType {
   category,
   area,
   ingredient,
-  recipe,
+  searchItem,
 }
 
 extension FetchTypeExtension on FetchType {
@@ -247,7 +247,7 @@ extension FetchTypeExtension on FetchType {
         return 2;
       case FetchType.ingredient:
         return 3;
-      case FetchType.recipe:
+      case FetchType.searchItem:
         return 4;
     }
   }

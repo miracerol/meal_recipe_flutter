@@ -9,6 +9,7 @@ import 'package:meal_recipe_flutter/model/category/category_model.dart';
 
 import '../model/area/area_model.dart';
 import '../model/ingredient/ingredient_model.dart';
+import '../model/searchItem/search_item_model.dart';
 
 abstract class IMealService{
   IMealService(this.dio);
@@ -17,6 +18,7 @@ abstract class IMealService{
   Future<Category?> fetchCategories();
   Future<Area?> fetchAreas();
   Future<Ingredient?> fetchIngredients();
+  Future<SearchItem?> fetchSearchItems(String type, String name);
 }
 
 class MealService extends IMealService {
@@ -52,6 +54,18 @@ class MealService extends IMealService {
       final jsonBody = response.data;
       if (jsonBody is Map<String, dynamic>) {
         return Ingredient.fromJson(jsonBody);
+      }
+    }
+    return null;
+  }
+
+  @override
+  Future<SearchItem?> fetchSearchItems(String type, String name) async{
+    final response = await dio.get('/filter.php?$type=$name');
+    if (response.statusCode == HttpStatus.ok) {
+      final jsonBody = response.data;
+      if (jsonBody is Map<String, dynamic>) {
+        return SearchItem.fromJson(jsonBody);
       }
     }
     return null;
