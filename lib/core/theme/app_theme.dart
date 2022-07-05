@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class AppTheme {
   static ThemeData get lightTheme => ThemeData.light().copyWith(
@@ -10,6 +11,7 @@ class AppTheme {
       ),
       appBarTheme: const AppBarTheme(
         backgroundColor: Color(0xffef0086),
+        systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.transparent),
       ),
       textTheme: ThemeData.light().textTheme.copyWith(
         labelLarge: const TextStyle(
@@ -27,6 +29,7 @@ class AppTheme {
       ),
       appBarTheme: const AppBarTheme(
         backgroundColor: Color(0xff590035),
+        systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.transparent),
       ),
       textTheme: ThemeData.dark().textTheme.copyWith(
         labelLarge: const TextStyle(

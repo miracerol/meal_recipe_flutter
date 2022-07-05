@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meal_recipe_flutter/core/theme/app_theme.dart';
 import 'package:meal_recipe_flutter/view/home/home_view.dart';
+import 'package:meal_recipe_flutter/view/meal_list/meal_list_view.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-      home: const HomeView(),
+      home: const MealListView(),
     );
   }
 }

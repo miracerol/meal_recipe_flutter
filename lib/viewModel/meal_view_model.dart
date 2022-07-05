@@ -2,7 +2,6 @@
 
 import 'dart:core';
 
-import 'package:flutter/foundation.dart';
 import 'package:meal_recipe_flutter/product/loadingWidget.dart';
 import 'package:meal_recipe_flutter/service/meal_service.dart';
 import 'package:meal_recipe_flutter/service/network_manager.dart';

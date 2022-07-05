@@ -17,9 +17,9 @@ class Area {
 }
 @JsonSerializable()
 class Meals {
-  String? strCategory;
+  String? strArea;
 
-  Meals({this.strCategory});
+  Meals({this.strArea});
 
   factory Meals.fromJson(Map<String, dynamic> json) {
     return _$MealsFromJson(json);

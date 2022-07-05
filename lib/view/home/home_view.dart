@@ -2,9 +2,12 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:meal_recipe_flutter/model/category/category_model.dart';
+import 'package:meal_recipe_flutter/model/ingredient/ingredient_model.dart';
 import 'package:meal_recipe_flutter/service/meal_service.dart';
 import 'package:provider/provider.dart';
 
+import '../../model/area/area_model.dart';
+import '../../service/network_manager.dart';
 import '../../viewModel/model_provider.dart';
 
 class HomeView extends StatefulWidget {
@@ -24,8 +27,9 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     var textEditingController = TextEditingController();
     return ChangeNotifierProvider<ModelProvider>(
-        create: (context) => ModelProvider(MealService(Dio(
-            BaseOptions(baseUrl: 'https://www.themealdb.com/api/json/v1/1/')))),
+        create: (context) => ModelProvider(
+            MealService(ProjectNetworkManager.instance.service),
+            FetchType.all.value),
         builder: (context, child) {
           return Scaffold(
               resizeToAvoidBottomInset: false,
@@ -33,13 +37,18 @@ class _HomeViewState extends State<HomeView> {
               body: Column(
                 children: [
                   HorizontalList(
-                      title: "Categories",
-                      items: context.watch<ModelProvider>().resources),
+                    title: "Categories",
+                    items:
+                        context.watch<ModelProvider>().resourcesCategory,
+                  ),
                   HorizontalList(
-                      title: "Area",
-                      items: context.watch<ModelProvider>().resources),
-                  const HomeSmallList(
+                    title: "Area",
+                    items:
+                        context.watch<ModelProvider>().resourcesArea,
+                  ),
+                  HomeSmallList(
                     title: "Ingredients",
+                    items: context.watch<ModelProvider>().resourcesIngredient,
                   )
                 ],
               ));
@@ -71,27 +80,34 @@ class _HomeViewState extends State<HomeView> {
   }
 }
 
-class HomeSmallList extends StatelessWidget {
+class HomeSmallList extends StatefulWidget {
   const HomeSmallList({
-    Key? key,
     required String title,
+    required List<dynamic> items,
+    Key? key,
   })  : _title = title,
+        _items = items,
         super(
           key: key,
         );
   final String _title;
+  final List<dynamic> _items;
+  @override
+  State<HomeSmallList> createState() => _HomeSmallListState();
+}
 
+class _HomeSmallListState extends State<HomeSmallList> {
   @override
   Widget build(BuildContext context) {
     return Flexible(
       flex: 2,
       child: Column(
         children: [
-          HomeTitle(title: _title),
+          HomeTitle(title: widget._title),
           Expanded(
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: 10,
+              itemCount: widget._items.length,
               itemBuilder: (BuildContext context, int index) {
                 return Wrap(children: [
                   Card(
@@ -100,7 +116,9 @@ class HomeSmallList extends StatelessWidget {
                     child: Center(
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
-                        child: Text("Ingredient $index"),
+                        child: Text(
+                          widget._items[index].strIngredient ?? "",
+                        ),
                       ),
                     ),
                   ),
@@ -117,7 +135,7 @@ class HomeSmallList extends StatelessWidget {
 class HorizontalList extends StatefulWidget {
   const HorizontalList({
     required String title,
-    required List<Categories> items,
+    required List<dynamic> items,
     Key? key,
   })  : _title = title,
         itemList = items,
@@ -125,7 +143,7 @@ class HorizontalList extends StatefulWidget {
           key: key,
         );
   final String _title;
-  final List<Categories> itemList;
+  final List<dynamic> itemList;
 
   @override
   State<HorizontalList> createState() => _HorizontalListState();
@@ -154,7 +172,8 @@ class _HorizontalListState extends State<HorizontalList> {
                       child: Column(
                         children: [
                           Image.network(
-                            widget.itemList[index].strCategoryThumb ?? "",
+                            widget.itemList[index] is Categories
+                                ? widget.itemList[index].strCategoryThumb : "http://via.placeholder.com/700x700",
                             fit: BoxFit.fitWidth,
                           ),
                           Expanded(
@@ -162,7 +181,11 @@ class _HorizontalListState extends State<HorizontalList> {
                               padding: const EdgeInsets.all(1.0),
                               child: Center(
                                 child: AutoSizeText(
-                                  '${widget.itemList[index].strCategory}',
+                                  widget.itemList[index] is Categories
+                                      ? widget.itemList[index].strCategory
+                                      : widget.itemList[index] is Meals
+                                          ? widget.itemList[index].strArea ?? ""
+                                          : "",
                                   style: Theme.of(context).textTheme.labelSmall,
                                   maxLines: 2,
                                 ),
@@ -202,5 +225,30 @@ class HomeTitle extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+enum FetchType {
+  all,
+  category,
+  area,
+  ingredient,
+  recipe,
+}
+
+extension FetchTypeExtension on FetchType {
+  int get value {
+    switch (this) {
+      case FetchType.all:
+        return 0;
+      case FetchType.category:
+        return 1;
+      case FetchType.area:
+        return 2;
+      case FetchType.ingredient:
+        return 3;
+      case FetchType.recipe:
+        return 4;
+    }
   }
 }

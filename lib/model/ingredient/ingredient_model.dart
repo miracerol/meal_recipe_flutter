@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'ingredient_model.g.dart';
 @JsonSerializable()
 class Ingredient {
-  List<Meals>? meals;
+  List<MealsI>? meals;
 
   Ingredient({this.meals});
 
@@ -16,23 +16,23 @@ class Ingredient {
 }
 
 @JsonSerializable()
-class Meals {
+class MealsI {
   String? idIngredient;
   String? strIngredient;
   String? strDescription;
   String? strType;
 
-  Meals(
+  MealsI(
       {this.idIngredient,
         this.strIngredient,
         this.strDescription,
         this.strType});
 
-  factory Meals.fromJson(Map<String, dynamic> json) {
-    return _$MealsFromJson(json);
+  factory MealsI.fromJson(Map<String, dynamic> json) {
+    return _$MealsIFromJson(json);
   }
 
   Map<String, dynamic> toJson() {
-    return _$MealsToJson(this);
+    return _$MealsIToJson(this);
   }
 }

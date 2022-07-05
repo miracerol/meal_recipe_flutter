@@ -17,9 +17,9 @@ Map<String, dynamic> _$AreaToJson(Area instance) => <String, dynamic>{
     };
 
 Meals _$MealsFromJson(Map<String, dynamic> json) => Meals(
-      strCategory: json['strCategory'] as String?,
+      strArea: json['strArea'] as String?,
     );
 
 Map<String, dynamic> _$MealsToJson(Meals instance) => <String, dynamic>{
-      'strCategory': instance.strCategory,
+      'strArea': instance.strArea,
     };
