@@ -67,8 +67,9 @@ class GridWidgetList extends StatelessWidget {
                     ),
                     child: Column(
                       children: [
-                        Image.network(
-                          _items[index].strMealThumb ?? "",
+                        FadeInImage.assetNetwork(
+                          placeholder: 'assets/image/png/img_placeholder_pink.png',
+                          image: _items[index].strMealThumb ?? "",
                           fit: BoxFit.fitWidth,
                         ),
                         Expanded(

@@ -132,4 +132,135 @@ class Meals {
   Map<String, dynamic> toJson() {
     return _$MealsToJson(this);
   }
+
+  List<String> getIngAsList(){
+    List<String> list = [];
+    if(strIngredient1 != "" && strIngredient1 != null){
+      list.add(strIngredient1!);
+    }
+    if(strIngredient2 != "" && strIngredient2 != null){
+      list.add(strIngredient2!);
+    }
+    if(strIngredient3 != "" && strIngredient3 != null){
+      list.add(strIngredient3!);
+    }
+    if(strIngredient4 != "" && strIngredient4 != null){
+      list.add(strIngredient4!);
+    }
+    if(strIngredient5 != "" && strIngredient5 != null){
+      list.add(strIngredient5!);
+    }
+    if(strIngredient6 != "" && strIngredient6 != null){
+      list.add(strIngredient6!);
+    }
+    if(strIngredient7 != "" && strIngredient7 != null){
+      list.add(strIngredient7!);
+    }
+    if(strIngredient8 != "" && strIngredient8 != null){
+      list.add(strIngredient8!);
+    }
+    if(strIngredient9 != "" && strIngredient9 != null){
+      list.add(strIngredient9!);
+    }
+    if(strIngredient10 != "" && strIngredient10 != null){
+      list.add(strIngredient10!);
+    }
+    if(strIngredient11 != "" && strIngredient11 != null){
+      list.add(strIngredient11!);
+    }
+    if(strIngredient12 != "" && strIngredient12 != null){
+      list.add(strIngredient12!);
+    }
+    if(strIngredient13 != "" && strIngredient13 != null){
+      list.add(strIngredient13!);
+    }
+    if(strIngredient14 != "" && strIngredient14 != null){
+      list.add(strIngredient14!);
+    }
+    if(strIngredient15 != "" && strIngredient15 != null){
+      list.add(strIngredient15!);
+    }
+    if(strIngredient16 != "" && strIngredient16 != null){
+      list.add(strIngredient16!);
+    }
+    if(strIngredient17 != "" && strIngredient17 != null){
+      list.add(strIngredient17!);
+    }
+    if(strIngredient18 != "" && strIngredient18 != null){
+      list.add(strIngredient18!);
+    }
+    if(strIngredient19 != "" && strIngredient19 != null){
+      list.add(strIngredient19!);
+    }
+    if(strIngredient20 != "" && strIngredient20 != null){
+      list.add(strIngredient20!);
+    }
+    return list;
+
+  }
+  List<String> getMeasureAsList(){
+    List<String> list = [];
+    if(strMeasure1 != "" && strMeasure1 != null){
+      list.add(strMeasure1!);
+    }
+    if(strMeasure2 != "" && strMeasure2 != null){
+      list.add(strMeasure2!);
+    }
+    if(strMeasure3 != "" && strMeasure3 != null){
+      list.add(strMeasure3!);
+    }
+    if(strMeasure4 != "" && strMeasure4 != null){
+      list.add(strMeasure4!);
+    }
+    if(strMeasure5 != "" && strMeasure5 != null){
+      list.add(strMeasure5!);
+    }
+    if(strMeasure6 != "" && strMeasure6 != null){
+      list.add(strMeasure6!);
+    }
+    if(strMeasure7 != "" && strMeasure7 != null){
+      list.add(strMeasure7!);
+    }
+    if(strMeasure8 != "" && strMeasure8 != null){
+      list.add(strMeasure8!);
+    }
+    if(strMeasure9 != "" && strMeasure9 != null){
+      list.add(strMeasure9!);
+    }
+    if(strMeasure10 != "" && strMeasure10 != null){
+      list.add(strMeasure10!);
+    }
+    if(strMeasure11 != "" && strMeasure11 != null){
+      list.add(strMeasure11!);
+    }
+    if(strMeasure12 != "" && strMeasure12 != null){
+      list.add(strMeasure12!);
+    }
+    if(strMeasure13 != "" && strMeasure13 != null){
+      list.add(strMeasure13!);
+    }
+    if(strMeasure14 != "" && strMeasure14 != null){
+      list.add(strMeasure14!);
+    }
+    if(strMeasure15 != "" && strMeasure15 != null){
+      list.add(strMeasure15!);
+    }
+    if(strMeasure16 != "" && strMeasure16 != null) {
+      list.add(strMeasure16!);
+    }
+    if(strMeasure17 != "" && strMeasure17 != null){
+      list.add(strMeasure17!);
+    }
+    if(strMeasure18 != "" && strMeasure18 != null){
+      list.add(strMeasure18!);
+    }
+    if(strMeasure19 != "" && strMeasure19 != null){
+      list.add(strMeasure19!);
+    }
+    if(strMeasure20 != "" && strMeasure20 != null){
+      list.add(strMeasure20!);
+    }
+    return list;
+
+  }
 }

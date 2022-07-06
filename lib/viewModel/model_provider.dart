@@ -14,6 +14,8 @@ class ModelProvider extends ChangeNotifier {
   List<MealsI> resourcesIngredient = [];
   List<ItemS> resourcesSearchItem = [];
   List<Meals> resourcesMeal = [];
+  List<String> ingList = [];
+  List<String> measureList = [];
   bool isLoading = false;
 
   void _changeLoading() {
@@ -86,6 +88,8 @@ class ModelProvider extends ChangeNotifier {
   Future<void> _fetchMeals(String type) async {
     _changeLoading();
     resourcesMeal = (await mealService.fetchMeal(type))?.meals ?? [];
+    ingList = resourcesMeal[0].getIngAsList();
+    measureList = resourcesMeal[0].getMeasureAsList();
     _changeLoading();
   }
 }

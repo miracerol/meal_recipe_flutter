@@ -5,7 +5,7 @@ class AppTheme {
   static ThemeData get lightTheme => ThemeData.light().copyWith(
 
       colorScheme: const ColorScheme.light(
-        primary: Colors.black,
+        primary: Color(0xffef0086),
         secondary: Colors.white,
         error: Color(0xffec1d25),
       ),

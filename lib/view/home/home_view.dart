@@ -171,8 +171,9 @@ class _HorizontalListState extends State<HorizontalList> {
                       ),
                       child: Column(
                         children: [
-                          Image.network(
-                            widget.itemList[index] is Categories
+                          FadeInImage.assetNetwork(
+                            placeholder: 'assets/image/png/img_placeholder_pink.png',
+                            image: widget.itemList[index] is Categories
                                 ? widget.itemList[index].strCategoryThumb : "http://via.placeholder.com/700x700",
                             fit: BoxFit.fitWidth,
                           ),
@@ -234,6 +235,7 @@ enum FetchType {
   area,
   ingredient,
   searchItem,
+  meal,
 }
 
 extension FetchTypeExtension on FetchType {
@@ -249,6 +251,8 @@ extension FetchTypeExtension on FetchType {
         return 3;
       case FetchType.searchItem:
         return 4;
+      case FetchType.meal:
+        return 5;
     }
   }
 }
