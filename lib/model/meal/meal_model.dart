@@ -199,66 +199,112 @@ class Meals {
 
   }
   List<String> getMeasureAsList(){
+    int size = getIngAsList().length;
     List<String> list = [];
     if(strMeasure1 != "" && strMeasure1 != null){
       list.add(strMeasure1!);
     }
+    else if(list.length < size){
+      list.add(" ");
+    }
     if(strMeasure2 != "" && strMeasure2 != null){
       list.add(strMeasure2!);
+    }else if(list.length < size){
+      list.add(" ");
     }
+
     if(strMeasure3 != "" && strMeasure3 != null){
       list.add(strMeasure3!);
+    }
+    else if(list.length < size){
+      list.add(" ");
     }
     if(strMeasure4 != "" && strMeasure4 != null){
       list.add(strMeasure4!);
     }
+    else if(list.length < size){
+      list.add(" ");
+    }
     if(strMeasure5 != "" && strMeasure5 != null){
       list.add(strMeasure5!);
     }
+    else if(list.length < size){
+      list.add(" ");
+    }
     if(strMeasure6 != "" && strMeasure6 != null){
       list.add(strMeasure6!);
+    }else if(list.length < size){
+      list.add(" ");
     }
     if(strMeasure7 != "" && strMeasure7 != null){
       list.add(strMeasure7!);
+    }else if(list.length < size){
+      list.add(" ");
     }
     if(strMeasure8 != "" && strMeasure8 != null){
       list.add(strMeasure8!);
+    }else if(list.length < size){
+      list.add(" ");
     }
     if(strMeasure9 != "" && strMeasure9 != null){
       list.add(strMeasure9!);
+    }else if(list.length < size){
+      list.add(" ");
     }
     if(strMeasure10 != "" && strMeasure10 != null){
       list.add(strMeasure10!);
+    }else if(list.length < size){
+      list.add(" ");
     }
     if(strMeasure11 != "" && strMeasure11 != null){
       list.add(strMeasure11!);
+    }else if(list.length < size){
+      list.add(" ");
     }
     if(strMeasure12 != "" && strMeasure12 != null){
       list.add(strMeasure12!);
+    }else if(list.length < size){
+      list.add(" ");
     }
     if(strMeasure13 != "" && strMeasure13 != null){
       list.add(strMeasure13!);
+    }else if(list.length < size){
+      list.add(" ");
     }
     if(strMeasure14 != "" && strMeasure14 != null){
       list.add(strMeasure14!);
+    }else if(list.length < size){
+      list.add(" ");
     }
     if(strMeasure15 != "" && strMeasure15 != null){
       list.add(strMeasure15!);
+    }else if(list.length < size){
+      list.add(" ");
     }
     if(strMeasure16 != "" && strMeasure16 != null) {
       list.add(strMeasure16!);
+    }else if(list.length < size){
+      list.add(" ");
     }
     if(strMeasure17 != "" && strMeasure17 != null){
       list.add(strMeasure17!);
+    }else if(list.length < size){
+      list.add(" ");
     }
     if(strMeasure18 != "" && strMeasure18 != null){
       list.add(strMeasure18!);
+    }else if(list.length < size){
+      list.add(" ");
     }
     if(strMeasure19 != "" && strMeasure19 != null){
       list.add(strMeasure19!);
+    }else if(list.length < size){
+      list.add(" ");
     }
     if(strMeasure20 != "" && strMeasure20 != null){
       list.add(strMeasure20!);
+    }else if(list.length < size){
+      list.add(" ");
     }
     return list;
 
