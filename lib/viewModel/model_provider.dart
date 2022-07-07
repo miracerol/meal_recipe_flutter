@@ -20,6 +20,7 @@ class ModelProvider extends ChangeNotifier {
 
   void _changeLoading() {
     isLoading = !isLoading;
+
     notifyListeners();
   }
 

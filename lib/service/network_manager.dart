@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 
 class ProjectNetworkManager {
   ProjectNetworkManager._() {
-    _dio = Dio(BaseOptions(baseUrl: 'https://www.themealdb.com/api/json/v1/1'));
+    _dio = Dio(BaseOptions(baseUrl: 'https://www.themealdb.com/api/json/v1/1',));
   }
   late final Dio _dio;
 

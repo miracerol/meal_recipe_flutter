@@ -1,6 +1,8 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:meal_recipe_flutter/model/searchItem/search_item_model.dart';
+import 'package:meal_recipe_flutter/product/navigator/app_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../service/meal_service.dart';
@@ -9,8 +11,9 @@ import '../../viewModel/model_provider.dart';
 import '../home/home_view.dart';
 
 class MealListView extends StatefulWidget {
-  const MealListView({Key? key}) : super(key: key);
-
+  const MealListView({required String type, required String query, Key? key}) : _type=type, _query = query,  super(key: key);
+  final String _type;
+  final String _query;
   @override
   State<MealListView> createState() => _MealListViewState();
 }
@@ -18,21 +21,21 @@ class MealListView extends StatefulWidget {
 class _MealListViewState extends State<MealListView> {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<ModelProvider>(
-        create: (context) => ModelProvider(
-            MealService(ProjectNetworkManager.instance.service),
-            FetchType.searchItem.value,"c","Seafood"),
+    return ChangeNotifierProvider<ModelProvider>.value(
+        
         builder: (context, child) {
           return Scaffold(
             appBar: AppBar(
-              title: const Text('Meal List'),
+              title: widget._type != "s" ? Text(renameNormal(widget._query)) : Text("Search") ,
               centerTitle: true,
             ),
             body: GridWidgetList(
               items: context.watch<ModelProvider>().resourcesSearchItem ?? [],
             ),
           );
-        });
+        }, value: ModelProvider(
+        MealService(ProjectNetworkManager.instance.service),
+        FetchType.searchItem.value,widget._type,widget._query),);
   }
 }
 
@@ -60,27 +63,34 @@ class GridWidgetList extends StatelessWidget {
               itemCount: _items.length,
               itemBuilder: (BuildContext ctx, index) {
                 return SizedBox(
-                  child: Card(
-                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Column(
-                      children: [
-                        FadeInImage.assetNetwork(
-                          placeholder: 'assets/image/png/img_placeholder_pink.png',
-                          image: _items[index].strMealThumb ?? "",
-                          fit: BoxFit.fitWidth,
-                        ),
-                        Expanded(
-                            child: Center(
-                                child: AutoSizeText(
-                          _items[index].strMeal ?? "",
-                          maxLines: 2,
-                          style: ThemeData.light().textTheme.labelSmall,
-                          textAlign: TextAlign.center,
-                        ))),
-                      ],
+                  child: InkWell(
+                    onTap: (){
+                      context.router.push(DetailRoute(id: _items[index].idMeal));
+                    },
+                    child: Card(
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Column(
+                        children: [
+                          Center(
+                            child: FadeInImage.assetNetwork(
+                              placeholder: 'assets/image/png/img_placeholder_pink.png',
+                              image: _items[index].strMealThumb ?? "",
+                              fit: BoxFit.fitHeight,
+                            ),
+                          ),
+                          Expanded(
+                              child: Center(
+                                  child: AutoSizeText(
+                            _items[index].strMeal ?? "",
+                            maxLines: 2,
+                            style: ThemeData.light().textTheme.labelSmall,
+                            textAlign: TextAlign.center,
+                          ))),
+                        ],
+                      ),
                     ),
                   ),
                 );
@@ -91,4 +101,11 @@ class GridWidgetList extends StatelessWidget {
       ],
     );
   }
+}
+
+String renameNormal(String lower){
+  // return replace underscores with spaces and capitalize first letters
+  return lower.replaceAll('_', ' ').split(' ').map((word) {
+    return word.substring(0, 1).toUpperCase() + word.substring(1);
+  }).join(' ');
 }

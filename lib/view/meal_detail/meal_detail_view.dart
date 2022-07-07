@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:meal_recipe_flutter/model/meal/meal_model.dart';
 import 'package:provider/provider.dart';
 
 import '../../service/meal_service.dart';
@@ -8,7 +9,10 @@ import '../../viewModel/model_provider.dart';
 import '../home/home_view.dart';
 
 class DetailView extends StatefulWidget {
-  const DetailView({Key? key}) : super(key: key);
+  const DetailView({required String id, Key? key})
+      : _id = id,
+        super(key: key);
+  final String _id;
 
   @override
   State<DetailView> createState() => _DetailViewState();
@@ -17,95 +21,108 @@ class DetailView extends StatefulWidget {
 class _DetailViewState extends State<DetailView> {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<ModelProvider>(
-        create: (context) => ModelProvider(
-            MealService(ProjectNetworkManager.instance.service),
-            FetchType.meal.value,
-            "52772"),
-        builder: (context, child) {
-          return Scaffold(
-              body: Center(
-            child: CustomScrollView(slivers: [
-              SliverAppBar(
-                pinned: true,
-                floating: false,
-                backgroundColor: Color(0xffef0086),
-                expandedHeight: MediaQuery.of(context).size.height * 0.5,
-                flexibleSpace: FlexibleSpaceBar(
-                  background: FadeInImage.assetNetwork(
-                      placeholder: 'assets/image/png/img_placeholder.png',
-                      image:
-                          "https://www.themealdb.com/images/media/meals/wvpsxx1468256321.jpg"),
+    return ChangeNotifierProvider<ModelProvider>.value(
+      builder: (context, child) {
+        return Scaffold(
+            body: Center(
+          child: CustomScrollView(slivers: [
+            SliverAppBar(
+              pinned: true,
+              floating: false,
+              backgroundColor: Color(0xffef0086),
+              expandedHeight: MediaQuery.of(context).size.height * 0.5,
+              flexibleSpace: FlexibleSpaceBar(
+                  background: TopImageWidget(
+                    imageUrl: context.watch<ModelProvider>().resourcesMeal ?? [],
+
+                  )),
+            ),
+            SliverList(
+                delegate: SliverChildListDelegate([
+              Card(
+                  child: Column(children: [
+                Text(
+                  '${context.watch<ModelProvider>().resourcesMeal.isNotEmpty ? context.watch<ModelProvider>().resourcesMeal[0].strMeal : ""}',
+                  style: Theme.of(context)
+                      .textTheme
+                      .labelMedium
+                      ?.copyWith(color: Color(0xffef0086)),
                 ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10.0, top: 5.0),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(left: 15.0),
+                          child: Text(
+                              "Category: ${context.watch<ModelProvider>().resourcesMeal.isNotEmpty ? context.watch<ModelProvider>().resourcesMeal[0].strCategory : ""}",
+                              style: ThemeData.light()
+                                  .textTheme
+                                  .labelSmall
+                                  ?.copyWith(
+                                    fontSize: 18.0,
+                                  )),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(right: 15.0),
+                          child: Text(
+                              "Area: ${context.watch<ModelProvider>().resourcesMeal.isNotEmpty ? context.watch<ModelProvider>().resourcesMeal[0].strArea : ""}",
+                              style: ThemeData.light()
+                                  .textTheme
+                                  .labelSmall
+                                  ?.copyWith(
+                                    fontSize: 18.0,
+                                  )),
+                        ),
+                      ]),
+                )
+              ])),
+              IngredientsWidget(
+                ingredients: context.watch<ModelProvider>().ingList,
+                measures: context.watch<ModelProvider>().measureList,
               ),
-              SliverList(
-                  delegate: SliverChildListDelegate([
-                Card(
-                    child: Column(children: [
+              Card(
+                  child: Column(
+                children: [
                   Text(
-                    '${context.watch<ModelProvider>().resourcesMeal.isNotEmpty ? context.watch<ModelProvider>().resourcesMeal[0].strMeal : ""}',
-                    style: Theme.of(context)
-                        .textTheme
-                        .labelMedium
-                        ?.copyWith(color: Color(0xffef0086)),
+                    'Instructions',
+                    style: Theme.of(context).textTheme.labelMedium,
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 10.0),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(left: 15.0),
-                            child: Text(
-                                "Category: ${context.watch<ModelProvider>().resourcesMeal.isNotEmpty ? context.watch<ModelProvider>().resourcesMeal[0].strCategory : ""}",
-                                style: ThemeData.light()
-                                    .textTheme
-                                    .labelSmall
-                                    ?.copyWith(
-                                      fontSize: 18.0,
-                                    )),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(right: 15.0),
-                            child: Text(
-                                "Area: ${context.watch<ModelProvider>().resourcesMeal.isNotEmpty ? context.watch<ModelProvider>().resourcesMeal[0].strArea : ""}",
-                                style: ThemeData.light()
-                                    .textTheme
-                                    .labelSmall
-                                    ?.copyWith(
-                                      fontSize: 18.0,
-                                    )),
-                          ),
-                        ]),
-                  )
-                ])),
-                IngredientsWidget(
-                  ingredients: context.watch<ModelProvider>().ingList ?? [],
-                  measures: context.watch<ModelProvider>().measureList ?? [],
-                ),
-                Card(
-                    child: Column(
-                  children: [
-                    Text(
-                      'Instructions',
-                      style: Theme.of(context).textTheme.labelMedium,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10.0),
-                      child: Text(
-                          '${context.watch<ModelProvider>().resourcesMeal.isNotEmpty ? context.watch<ModelProvider>().resourcesMeal[0].strInstructions : ""}',
-                          style:
-                              Theme.of(context).textTheme.labelMedium?.copyWith(
-                                    fontSize: 18.0,
-                                    fontWeight: FontWeight.normal,
-                                  )),
-                    ),
-                  ],
-                ))
-              ]))
-            ]),
-          ));
-        });
+                    padding: const EdgeInsets.all(15.0),
+                    child: Text(
+                        '${context.watch<ModelProvider>().resourcesMeal.isNotEmpty ? context.watch<ModelProvider>().resourcesMeal[0].strInstructions : ""}',
+                        style:
+                            Theme.of(context).textTheme.labelMedium?.copyWith(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.normal,
+                                )),
+                  ),
+                ],
+              ))
+            ]))
+          ]),
+        ));
+      },
+      value: ModelProvider(MealService(ProjectNetworkManager.instance.service),
+          FetchType.meal.value, widget._id),
+    );
+  }
+}
+
+class TopImageWidget extends StatelessWidget {
+  const TopImageWidget({
+    required List<Meals> imageUrl,
+    Key? key,
+  }) : _imageUrl = imageUrl ,super(key: key);
+  final List<Meals> _imageUrl;
+  @override
+  Widget build(BuildContext context) {
+    return _imageUrl.isNotEmpty ? FadeInImage.assetNetwork(
+                placeholder: 'assets/image/png/img_placeholder.png',
+                image: _imageUrl[0].strMealThumb ?? '',
+              ): Container();
   }
 }
 

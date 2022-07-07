@@ -16,10 +16,10 @@ Map<String, dynamic> _$AreaToJson(Area instance) => <String, dynamic>{
       'meals': instance.meals,
     };
 
-MealsA _$MealsFromJson(Map<String, dynamic> json) => MealsA(
+MealsA _$MealsAFromJson(Map<String, dynamic> json) => MealsA(
       strArea: json['strArea'] as String?,
     );
 
-Map<String, dynamic> _$MealsToJson(MealsA instance) => <String, dynamic>{
+Map<String, dynamic> _$MealsAToJson(MealsA instance) => <String, dynamic>{
       'strArea': instance.strArea,
     };

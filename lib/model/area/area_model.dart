@@ -22,10 +22,10 @@ class MealsA {
   MealsA({this.strArea});
 
   factory MealsA.fromJson(Map<String, dynamic> json) {
-    return _$MealsFromJson(json);
+    return _$MealsAFromJson(json);
   }
 
   Map<String, dynamic> toJson() {
-    return _$MealsToJson(this);
+    return _$MealsAToJson(this);
   }
 }
