@@ -1,5 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:meal_recipe_flutter/core/constants/assest_constants.dart';
+import 'package:meal_recipe_flutter/core/constants/local_constants.dart';
 import 'package:meal_recipe_flutter/model/meal/meal_model.dart';
 import 'package:provider/provider.dart';
 
@@ -56,7 +58,7 @@ class _DetailViewState extends State<DetailView> {
                         Padding(
                           padding: EdgeInsets.only(left: 15.0),
                           child: Text(
-                              "Category: ${context.watch<ModelProvider>().resourcesMeal.isNotEmpty ? context.watch<ModelProvider>().resourcesMeal[0].strCategory : ""}",
+                              "${LocalConstants.detailCategory}: ${context.watch<ModelProvider>().resourcesMeal.isNotEmpty ? context.watch<ModelProvider>().resourcesMeal[0].strCategory : ""}",
                               style: ThemeData.light()
                                   .textTheme
                                   .labelSmall
@@ -101,7 +103,7 @@ class _DetailViewState extends State<DetailView> {
                   child: Column(
                 children: [
                   Text(
-                    'Instructions',
+                    LocalConstants.detailInstructions,
                     style: Theme.of(context).textTheme.labelMedium,
                   ),
                   Padding(
@@ -138,7 +140,7 @@ class TopImageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return _imageUrl.isNotEmpty
         ? FadeInImage.assetNetwork(
-            placeholder: 'assets/image/png/img_placeholder.png',
+            placeholder: AssetConstants.placeholderPath,
             image: _imageUrl[0].strMealThumb ?? '',
           )
         : Container();
@@ -161,7 +163,7 @@ class IngredientsWidget extends StatelessWidget {
     return Card(
       child: Column(children: [
         Text(
-          'Ingredients',
+          LocalConstants.detailIngredients,
           style: Theme.of(context).textTheme.labelMedium,
         ),
         Padding(

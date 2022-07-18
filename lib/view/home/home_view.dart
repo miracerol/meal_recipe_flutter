@@ -2,14 +2,19 @@ import 'package:auto_route/auto_route.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:meal_recipe_flutter/core/constants/assest_constants.dart';
+import 'package:meal_recipe_flutter/core/constants/local_constants.dart';
 import 'package:meal_recipe_flutter/model/category/category_model.dart';
 import 'package:meal_recipe_flutter/model/ingredient/ingredient_model.dart';
+import 'package:meal_recipe_flutter/product/loadingWidget.dart';
 import 'package:meal_recipe_flutter/product/navigator/app_router.dart';
 import 'package:meal_recipe_flutter/service/meal_service.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/constants/country_flag_constants.dart';
 import '../../model/area/area_model.dart';
+import '../../service/meal_service.dart';
+import '../../service/meal_service.dart';
 import '../../service/network_manager.dart';
 import '../../viewModel/model_provider.dart';
 
@@ -27,6 +32,7 @@ class _HomeViewState extends State<HomeView> {
   }
 
   @override
+  @override
   Widget build(BuildContext context) {
     var textEditingController = TextEditingController();
     return ChangeNotifierProvider<ModelProvider>.value(
@@ -34,22 +40,25 @@ class _HomeViewState extends State<HomeView> {
         return Scaffold(
             resizeToAvoidBottomInset: false,
             appBar: buildAppBar(textEditingController),
-            body: Column(
-              children: [
-                HorizontalList(
-                  title: "Categories",
-                  items: context.watch<ModelProvider>().resourcesCategory,
-                ),
-                HorizontalList(
-                  title: "Area",
-                  items: context.watch<ModelProvider>().resourcesArea,
-                ),
-                HomeSmallList(
-                  title: "Ingredients",
-                  items: context.watch<ModelProvider>().resourcesIngredient,
-                )
-              ],
-            ));
+            body: context.watch<ModelProvider>().isLoading
+                ? const LoadingWidget()
+                : Column(
+                    children: [
+                      HorizontalList(
+                        title: LocalConstants.categories,
+                        items: context.watch<ModelProvider>().resourcesCategory,
+                      ),
+                      HorizontalList(
+                        title: LocalConstants.area,
+                        items: context.watch<ModelProvider>().resourcesArea,
+                      ),
+                      HomeSmallList(
+                        title: LocalConstants.ingredients,
+                        items:
+                            context.watch<ModelProvider>().resourcesIngredient,
+                      )
+                    ],
+                  ));
       },
       value: ModelProvider(MealService(ProjectNetworkManager.instance.service),
           FetchType.all.value),
@@ -73,7 +82,7 @@ class _HomeViewState extends State<HomeView> {
                   textEditingController.clear();
                 },
               ),
-              hintText: 'Search...',
+              hintText: LocalConstants.search,
               border: InputBorder.none),
         ),
       ),
@@ -115,8 +124,9 @@ class _HomeSmallListState extends State<HomeSmallList> {
                   InkWell(
                     onTap: () {
                       context.router.push(MealListRoute(
-                          type: "i",
-                          query: renameIng(widget._items[index].strIngredient)));
+                          type: LetterType.typeI.value,
+                          query:
+                              renameIng(widget._items[index].strIngredient)));
                     },
                     child: Card(
                       shape: const StadiumBorder(
@@ -176,8 +186,9 @@ class _HorizontalListState extends State<HorizontalList> {
                   child: InkWell(
                     onTap: () {
                       context.router.push(MealListRoute(
-                          type:
-                              widget.itemList[index] is Categories ? "c" : "a",
+                          type: widget.itemList[index] is Categories
+                              ? LetterType.typeC.value
+                              : LetterType.typeA.value,
                           query: widget.itemList[index] is Categories
                               ? widget.itemList[index].strCategory
                               : widget.itemList[index].strArea));
@@ -190,8 +201,7 @@ class _HorizontalListState extends State<HorizontalList> {
                         child: Column(
                           children: [
                             FadeInImage.assetNetwork(
-                              placeholder:
-                                  'assets/image/png/img_placeholder_pink.png',
+                              placeholder: AssetConstants.placeholderPinkPath,
                               image: widget.itemList[index] is Categories
                                   ? widget.itemList[index].strCategoryThumb
                                   : countryFlagMap[
@@ -277,6 +287,28 @@ extension FetchTypeExtension on FetchType {
         return 4;
       case FetchType.meal:
         return 5;
+    }
+  }
+}
+
+enum LetterType {
+  typeI,
+  typeA,
+  typeC,
+  typeS,
+}
+
+extension LetterTypeExtension on LetterType {
+  String get value {
+    switch (this) {
+      case LetterType.typeI:
+        return "i";
+      case LetterType.typeA:
+        return "a";
+      case LetterType.typeC:
+        return "c";
+      case LetterType.typeS:
+        return "s";
     }
   }
 }

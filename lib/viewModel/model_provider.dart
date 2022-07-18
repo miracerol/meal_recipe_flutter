@@ -3,6 +3,7 @@ import 'package:meal_recipe_flutter/model/category/category_model.dart';
 import 'package:meal_recipe_flutter/model/area/area_model.dart';
 import 'package:meal_recipe_flutter/model/ingredient/ingredient_model.dart';
 import 'package:meal_recipe_flutter/model/searchItem/search_item_model.dart';
+import 'package:meal_recipe_flutter/product/loadingWidget.dart';
 import 'package:meal_recipe_flutter/service/meal_service.dart';
 
 import '../model/meal/meal_model.dart';
@@ -53,29 +54,31 @@ class ModelProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> _fetchCategories() async {
-    _changeLoading();
+  Future<void> _fetchCategories([load = true])  async {
+    load ?_changeLoading(): null;
     resourcesCategory = (await mealService.fetchCategories())?.categories ?? [];
-    _changeLoading();
+    load ?_changeLoading(): null;
+
   }
 
-  Future<void> _fetchAreas() async {
-    _changeLoading();
+  Future<void> _fetchAreas([load = true]) async {
+    load ?_changeLoading(): null;
     resourcesArea = (await mealService.fetchAreas())?.meals ?? [];
-    _changeLoading();
+    load ?_changeLoading(): null;
   }
 
-  Future<void> _fetchIngredients() async {
-    _changeLoading();
+  Future<void> _fetchIngredients([load = true]) async {
+    load ?_changeLoading(): null;
     resourcesIngredient = (await mealService.fetchIngredients())?.meals ?? [];
-    _changeLoading();
+    load ? _changeLoading(): null;
   }
 
   Future<void> _fetchAll() async {
     _changeLoading();
-    _fetchCategories();
-    _fetchAreas();
-    _fetchIngredients();
+
+    await _fetchCategories(false);
+    await _fetchAreas(false);
+    await _fetchIngredients(false);
 
     _changeLoading();
   }

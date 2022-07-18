@@ -5,8 +5,9 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:meal_recipe_flutter/core/constants/api_constants.dart';
 import 'package:meal_recipe_flutter/model/category/category_model.dart';
-
+import 'package:meal_recipe_flutter/product/loadingWidget.dart';
 import '../model/area/area_model.dart';
 import '../model/ingredient/ingredient_model.dart';
 import '../model/searchItem/search_item_model.dart';
@@ -23,11 +24,11 @@ abstract class IMealService{
   Future<Meal?> fetchMeal(String id);
 }
 
-class MealService extends IMealService {
+class MealService extends IMealService{
   MealService(Dio dio) : super(dio);
   @override
   Future<Category?> fetchCategories() async {
-    final response = await dio.get('/categories.php');
+    final response = await dio.get(ApiConstants.apiCategories);
     if (response.statusCode == HttpStatus.ok) {
       final jsonBody = response.data;
       if (jsonBody is Map<String, dynamic>) {
@@ -39,7 +40,7 @@ class MealService extends IMealService {
 
   @override
   Future<Area?> fetchAreas() async {
-    final response = await dio.get('/list.php?a=list');
+    final response = await dio.get(ApiConstants.apiAreas);
     if (response.statusCode == HttpStatus.ok) {
       final jsonBody = response.data;
       if (jsonBody is Map<String, dynamic>) {
@@ -51,7 +52,7 @@ class MealService extends IMealService {
 
   @override
   Future<Ingredient?> fetchIngredients() async{
-    final response = await dio.get('/list.php?i=list');
+    final response = await dio.get(ApiConstants.apiIngredients);
     if (response.statusCode == HttpStatus.ok) {
       final jsonBody = response.data;
       if (jsonBody is Map<String, dynamic>) {
@@ -63,7 +64,7 @@ class MealService extends IMealService {
 
   @override
   Future<SearchItem?> fetchSearchItems(String type, String name) async{
-    final response = await dio.get('/filter.php?$type=$name');
+    final response = await dio.get('${ApiConstants.apiSearch}$type=$name');
     if (response.statusCode == HttpStatus.ok) {
       final jsonBody = response.data;
       if (jsonBody is Map<String, dynamic>) {
@@ -75,7 +76,7 @@ class MealService extends IMealService {
 
   @override
   Future<Meal?> fetchMeal(String id) async{
-    final response = await dio.get('/lookup.php?i=$id');
+    final response = await dio.get('${ApiConstants.apiMeal}$id');
     if (response.statusCode == HttpStatus.ok) {
       final jsonBody = response.data;
       if (jsonBody is Map<String, dynamic>) {

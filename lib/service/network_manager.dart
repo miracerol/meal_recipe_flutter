@@ -1,8 +1,9 @@
 import 'package:dio/dio.dart';
+import 'package:meal_recipe_flutter/core/constants/api_constants.dart';
 
 class ProjectNetworkManager {
   ProjectNetworkManager._() {
-    _dio = Dio(BaseOptions(baseUrl: 'https://www.themealdb.com/api/json/v1/1',));
+    _dio = Dio(BaseOptions(baseUrl: ApiConstants.apiBaseUrl+ApiConstants.apiKey,));
   }
   late final Dio _dio;
 
