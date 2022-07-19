@@ -8,6 +8,7 @@ import 'package:dio/dio.dart';
 import 'package:meal_recipe_flutter/core/constants/api_constants.dart';
 import 'package:meal_recipe_flutter/model/category/category_model.dart';
 import 'package:meal_recipe_flutter/product/loading_widget/loadingWidget.dart';
+import 'package:meal_recipe_flutter/view/home/home_view.dart';
 import '../model/area/area_model.dart';
 import '../model/ingredient/ingredient_model.dart';
 import '../model/searchItem/search_item_model.dart';
@@ -64,7 +65,9 @@ class MealService extends IMealService{
 
   @override
   Future<SearchItem?> fetchSearchItems(String type, String name) async{
-    final response = await dio.get('${ApiConstants.apiSearch}$type=$name');
+    final endpoint = type != LetterType.typeS.value ? '$type=$name': 'search.php?s=$name';
+    const sss = 'search.php?s=Arrabiata';
+    final response = await dio.get('${ApiConstants.apiSearch}$endpoint');
     if (response.statusCode == HttpStatus.ok) {
       final jsonBody = response.data;
       if (jsonBody is Map<String, dynamic>) {
