@@ -22,10 +22,7 @@ import '../../viewModel/model_provider.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
-  @override
-  void initState() {
-    final instance = SharedPrefs.instance;
-  }
+
   @override
   State<HomeView> createState() => _HomeViewState();
 }
@@ -34,13 +31,12 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
   late AnimationController animationController;
   @override
   void initState() {
-    final instance = SharedPrefs.instance;
     super.initState();
     animationController = AnimationController(
       vsync: this,
       duration: DesignConstants.themeDuration,
     );
-    animationController.animateTo(SharedPrefs.instance.prefs.getBool(AppConstants.themeSP)! ? 0 : 0.5);
+    animationController.animateTo(SharedPrefs.instance.prefs.getBool(AppConstants.themeSP)! ? 0.5 : 0);
   }
 
   @override

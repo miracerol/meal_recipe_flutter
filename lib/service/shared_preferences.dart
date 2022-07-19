@@ -1,5 +1,4 @@
 
-import 'package:meal_recipe_flutter/core/constants/app_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefs{
@@ -10,10 +9,13 @@ class SharedPrefs{
   SharedPreferences get prefs => _prefs;
 
   SharedPrefs._init()  {
-    SharedPreferences.getInstance().then((value){
-      _prefs = value;
-    });
+    SharedPreferences.getInstance();
   }
+  static Future createInstance() async {
+    _prefs = await SharedPreferences.getInstance();
+    return;
+  }
+
 
 
 
