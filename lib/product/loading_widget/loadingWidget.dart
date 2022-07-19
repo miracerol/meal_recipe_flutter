@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:lottie/lottie.dart';
-import 'package:meal_recipe_flutter/core/constants/assest_constants.dart';
+import 'package:meal_recipe_flutter/core/constants/asset_constants.dart';
 
 abstract class LoadingStateful<T extends StatefulWidget> extends State<T> {
   bool isLoading = false;
@@ -10,7 +9,6 @@ abstract class LoadingStateful<T extends StatefulWidget> extends State<T> {
     setState(() {
       isLoading = !isLoading;
     });
-
   }
 }
 
@@ -20,10 +18,11 @@ class LoadingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-        child: Lottie.asset(AssetConstants.loadingAssetPath),
+      child: Lottie.asset(AssetConstants.loadingAssetPath),
     );
   }
 }
+
 void openLoadingDialog(BuildContext context) {
   showDialog(
     barrierDismissible: false,
@@ -37,5 +36,3 @@ void openLoadingDialog(BuildContext context) {
 void closeLoadingDialog(BuildContext context) {
   Navigator.pop(context);
 }
-
-

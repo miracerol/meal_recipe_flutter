@@ -6,7 +6,8 @@ import 'package:meal_recipe_flutter/model/searchItem/search_item_model.dart';
 import 'package:meal_recipe_flutter/product/navigator/app_router.dart';
 import 'package:provider/provider.dart';
 
-import '../../core/constants/assest_constants.dart';
+import '../../core/constants/asset_constants.dart';
+import '../../core/constants/design_constants.dart';
 import '../../service/meal_service.dart';
 import '../../service/network_manager.dart';
 import '../../viewModel/model_provider.dart';
@@ -61,7 +62,7 @@ class GridWidgetList extends StatelessWidget {
       children: [
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding: DesignConstants.mediumPaddingAll,
             child: GridView.builder(
               gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                   maxCrossAxisExtent: 200,
@@ -80,7 +81,7 @@ class GridWidgetList extends StatelessWidget {
                     child: Card(
                       clipBehavior: Clip.antiAliasWithSaveLayer,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: DesignConstants.listCardBorderRadius,
                       ),
                       child: Column(
                         children: [
@@ -96,7 +97,7 @@ class GridWidgetList extends StatelessWidget {
                                   child: AutoSizeText(
                             _items[index].strMeal ?? "",
                             maxLines: 2,
-                            style: ThemeData.light().textTheme.labelSmall,
+                            style: Theme.of(context).textTheme.labelSmall,
                             textAlign: TextAlign.center,
                           ))),
                         ],

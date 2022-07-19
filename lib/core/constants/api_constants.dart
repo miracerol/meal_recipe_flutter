@@ -6,5 +6,4 @@ class ApiConstants {
   static const String apiIngredients = '/list.php?i=list';
   static const String apiSearch = '/filter.php?';
   static const String apiMeal = '/lookup.php?i=';
-
 }

@@ -303,7 +303,7 @@ class Meals {
     }
     if(strMeasure20 != "" && strMeasure20 != null){
       list.add(strMeasure20!);
-    }else if(list.length < size){
+    }else if((list.isNotEmpty ? list.length : 0 )< size){
       list.add(" ");
     }
     return list;

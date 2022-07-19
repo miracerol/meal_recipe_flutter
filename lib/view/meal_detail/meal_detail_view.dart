@@ -1,6 +1,6 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:meal_recipe_flutter/core/constants/assest_constants.dart';
+import 'package:meal_recipe_flutter/core/constants/asset_constants.dart';
+import 'package:meal_recipe_flutter/core/constants/design_constants.dart';
 import 'package:meal_recipe_flutter/core/constants/local_constants.dart';
 import 'package:meal_recipe_flutter/model/meal/meal_model.dart';
 import 'package:provider/provider.dart';
@@ -32,7 +32,7 @@ class _DetailViewState extends State<DetailView> {
             SliverAppBar(
               pinned: true,
               floating: false,
-              backgroundColor: Color(0xffef0086),
+              backgroundColor: Theme.of(context).colorScheme.primary,
               expandedHeight: MediaQuery.of(context).size.height * 0.5,
               flexibleSpace: FlexibleSpaceBar(
                   background: TopImageWidget(
@@ -43,31 +43,26 @@ class _DetailViewState extends State<DetailView> {
                 delegate: SliverChildListDelegate([
               Card(
                   child: Column(children: [
-                Text(
-                  '${context.watch<ModelProvider>().resourcesMeal.isNotEmpty ? context.watch<ModelProvider>().resourcesMeal[0].strMeal : ""}',
-                  style: Theme.of(context)
-                      .textTheme
-                      .labelMedium
-                      ?.copyWith(color: Color(0xffef0086)),
+                Center(
+                  child: Text(
+                    '${context.watch<ModelProvider>().resourcesMeal.isNotEmpty ? context.watch<ModelProvider>().resourcesMeal[0].strMeal : ""}',
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                        color: Theme.of(context).colorScheme.primary),
+                  ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 10.0, top: 5.0),
+                  padding: DesignConstants.mediumPaddingVertical,
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Padding(
-                          padding: EdgeInsets.only(left: 15.0),
+                          padding: DesignConstants.largePaddingLeft,
                           child: Text(
                               "${LocalConstants.detailCategory}: ${context.watch<ModelProvider>().resourcesMeal.isNotEmpty ? context.watch<ModelProvider>().resourcesMeal[0].strCategory : ""}",
-                              style: ThemeData.light()
-                                  .textTheme
-                                  .labelSmall
-                                  ?.copyWith(
-                                    fontSize: 18.0,
-                                  )),
+                              style: Theme.of(context).textTheme.headlineSmall),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(right: 15.0),
+                          padding: DesignConstants.largePaddingRight,
                           child: Row(
                             children: [
                               context
@@ -75,20 +70,18 @@ class _DetailViewState extends State<DetailView> {
                                       .resourcesMeal
                                       .isNotEmpty
                                   ? SizedBox(
-                                      height: MediaQuery.of(context).size.height *
-                                          0.04,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.04,
                                       child: Image.network(countryFlagMap[
                                               '${context.watch<ModelProvider>().resourcesMeal[0].strArea}'] ??
                                           ""))
                                   : Container(),
                               Text(
                                   " ${context.watch<ModelProvider>().resourcesMeal.isNotEmpty ? context.watch<ModelProvider>().resourcesMeal[0].strArea : ""}",
-                                  style: ThemeData.light()
+                                  style: Theme.of(context)
                                       .textTheme
-                                      .labelSmall
-                                      ?.copyWith(
-                                        fontSize: 18.0,
-                                      )),
+                                      .headlineSmall),
                             ],
                           ),
                         ),
@@ -107,14 +100,10 @@ class _DetailViewState extends State<DetailView> {
                     style: Theme.of(context).textTheme.labelMedium,
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(15.0),
+                    padding: DesignConstants.largePaddingAll,
                     child: Text(
                         '${context.watch<ModelProvider>().resourcesMeal.isNotEmpty ? context.watch<ModelProvider>().resourcesMeal[0].strInstructions : ""}',
-                        style:
-                            Theme.of(context).textTheme.labelMedium?.copyWith(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.normal,
-                                )),
+                        style: Theme.of(context).textTheme.headlineSmall),
                   ),
                 ],
               ))
@@ -167,32 +156,26 @@ class IngredientsWidget extends StatelessWidget {
           style: Theme.of(context).textTheme.labelMedium,
         ),
         Padding(
-            padding: const EdgeInsets.only(bottom: 10.0),
+            padding: DesignConstants.mediumPaddingBottom,
             child: Column(children: [
               for (int i = 0; i < _ingredients.length; i++)
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 10.0),
+                  padding: DesignConstants.mediumPaddingBottom,
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Padding(
-                          padding: EdgeInsets.only(left: 15.0),
-                          child: Text('${_ingredients[i]}',
-                              style: ThemeData.light()
-                                  .textTheme
-                                  .labelSmall
-                                  ?.copyWith(
-                                    fontSize: 18.0,
-                                  )),
+                          padding: DesignConstants.largePaddingLeft,
+                          child: Text(_ingredients[i],
+                              style: Theme.of(context).textTheme.headlineSmall),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(right: 15.0),
-                          child: Text('${_measures[i]}',
-                              style: ThemeData.light()
+                          padding: DesignConstants.largePaddingRight,
+                          child: Text(_measures[i],
+                              style: Theme.of(context)
                                   .textTheme
-                                  .labelSmall
+                                  .headlineSmall
                                   ?.copyWith(
-                                    fontSize: 18.0,
                                     fontWeight: FontWeight.bold,
                                   )),
                         ),

@@ -1,4 +1,4 @@
-class LocalConstants{
+class LocalConstants {
   static const String categories = 'Categories';
   static const String area = 'Area';
   static const String ingredients = 'Ingredients';

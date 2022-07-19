@@ -3,7 +3,7 @@ import 'package:meal_recipe_flutter/model/category/category_model.dart';
 import 'package:meal_recipe_flutter/model/area/area_model.dart';
 import 'package:meal_recipe_flutter/model/ingredient/ingredient_model.dart';
 import 'package:meal_recipe_flutter/model/searchItem/search_item_model.dart';
-import 'package:meal_recipe_flutter/product/loadingWidget.dart';
+import 'package:meal_recipe_flutter/product/loading_widget/loadingWidget.dart';
 import 'package:meal_recipe_flutter/service/meal_service.dart';
 
 import '../model/meal/meal_model.dart';

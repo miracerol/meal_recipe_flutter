@@ -1,34 +1,46 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:meal_recipe_flutter/core/constants/assest_constants.dart';
+import 'package:lottie/lottie.dart';
+import 'package:meal_recipe_flutter/core/constants/app_constants.dart';
+import 'package:meal_recipe_flutter/core/constants/asset_constants.dart';
+import 'package:meal_recipe_flutter/core/constants/design_constants.dart';
 import 'package:meal_recipe_flutter/core/constants/local_constants.dart';
 import 'package:meal_recipe_flutter/model/category/category_model.dart';
-import 'package:meal_recipe_flutter/model/ingredient/ingredient_model.dart';
-import 'package:meal_recipe_flutter/product/loadingWidget.dart';
+import 'package:meal_recipe_flutter/product/loading_widget/loadingWidget.dart';
 import 'package:meal_recipe_flutter/product/navigator/app_router.dart';
+import 'package:meal_recipe_flutter/product/theme_notifier/theme_notifier.dart';
 import 'package:meal_recipe_flutter/service/meal_service.dart';
+import 'package:meal_recipe_flutter/service/shared_preferences.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/constants/country_flag_constants.dart';
 import '../../model/area/area_model.dart';
-import '../../service/meal_service.dart';
 import '../../service/meal_service.dart';
 import '../../service/network_manager.dart';
 import '../../viewModel/model_provider.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
-
+  @override
+  void initState() {
+    final instance = SharedPrefs.instance;
+  }
   @override
   State<HomeView> createState() => _HomeViewState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
+  late AnimationController animationController;
   @override
   void initState() {
+    final instance = SharedPrefs.instance;
     super.initState();
+    animationController = AnimationController(
+      vsync: this,
+      duration: DesignConstants.themeDuration,
+    );
+    animationController.animateTo(SharedPrefs.instance.prefs.getBool(AppConstants.themeSP)! ? 0 : 0.5);
   }
 
   @override
@@ -67,26 +79,39 @@ class _HomeViewState extends State<HomeView> {
 
   AppBar buildAppBar(TextEditingController textEditingController) {
     return AppBar(
-        title: Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(15)),
-      child: Center(
-        child: TextField(
-          controller: textEditingController,
-          decoration: InputDecoration(
-              prefixIcon: const Icon(Icons.search),
-              suffixIcon: IconButton(
-                icon: const Icon(Icons.clear),
-                onPressed: () {
-                  textEditingController.clear();
-                },
-              ),
-              hintText: LocalConstants.search,
-              border: InputBorder.none),
+      title: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.secondary,
+            borderRadius: DesignConstants.searchRadius),
+        child: Center(
+          child: TextField(
+            controller: textEditingController,
+            decoration: InputDecoration(
+                prefixIcon: const Icon(Icons.search),
+                suffixIcon: IconButton(
+                  icon: const Icon(Icons.clear),
+                  onPressed: () {
+                    textEditingController.clear();
+                  },
+                ),
+                hintText: LocalConstants.search,
+                border: InputBorder.none),
+          ),
         ),
       ),
-    ));
+      actions: [
+        InkWell(
+          onTap: (){
+            var isLight = SharedPrefs.instance.prefs.getBool(AppConstants.themeSP);
+            animationController.animateTo(isLight! ? 0: 0.5);
+            context.read<ThemeNotifier>().changeTheme();
+          },
+          child: LottieBuilder.asset(AssetConstants.themeSwitchPath,
+              repeat: false, controller: animationController),
+        ),
+      ],
+    );
   }
 }
 
@@ -129,11 +154,12 @@ class _HomeSmallListState extends State<HomeSmallList> {
                               renameIng(widget._items[index].strIngredient)));
                     },
                     child: Card(
-                      shape: const StadiumBorder(
-                          side: BorderSide(color: Colors.grey)),
+                      shape: StadiumBorder(
+                          side: BorderSide(
+                              color: Theme.of(context).colorScheme.outline)),
                       child: Center(
                         child: Padding(
-                          padding: const EdgeInsets.all(10.0),
+                          padding: DesignConstants.mediumPaddingAll,
                           child: Text(
                             widget._items[index].strIngredient ?? "",
                           ),
@@ -196,7 +222,7 @@ class _HorizontalListState extends State<HorizontalList> {
                     child: Card(
                         clipBehavior: Clip.antiAliasWithSaveLayer,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: DesignConstants.homeCardBorderRadius,
                         ),
                         child: Column(
                           children: [
@@ -210,7 +236,7 @@ class _HorizontalListState extends State<HorizontalList> {
                             ),
                             Expanded(
                               child: Padding(
-                                padding: const EdgeInsets.all(1.0),
+                                padding: DesignConstants.verySmallPaddingAll,
                                 child: Center(
                                   child: AutoSizeText(
                                     widget.itemList[index] is Categories
@@ -251,7 +277,7 @@ class HomeTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(10),
+      padding: DesignConstants.mediumPaddingAll,
       child: Align(
         alignment: Alignment.topLeft,
         child: Text(

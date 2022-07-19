@@ -7,7 +7,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:meal_recipe_flutter/core/constants/api_constants.dart';
 import 'package:meal_recipe_flutter/model/category/category_model.dart';
-import 'package:meal_recipe_flutter/product/loadingWidget.dart';
+import 'package:meal_recipe_flutter/product/loading_widget/loadingWidget.dart';
 import '../model/area/area_model.dart';
 import '../model/ingredient/ingredient_model.dart';
 import '../model/searchItem/search_item_model.dart';
