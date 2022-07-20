@@ -36,7 +36,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
       vsync: this,
       duration: DesignConstants.themeDuration,
     );
-    animationController.animateTo(SharedPrefs.instance.prefs.getBool(AppConstants.themeSP)! ? 0.5 : 0);
+    animationController.animateTo(SharedPrefs.instance.prefs.getBool(AppConstants.themeSP) ?? true  ? 0.5 : 0);
   }
 
   @override
@@ -107,7 +107,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
       actions: [
         InkWell(
           onTap: (){
-            var isLight = SharedPrefs.instance.prefs.getBool(AppConstants.themeSP);
+            var isLight = SharedPrefs.instance.prefs.getBool(AppConstants.themeSP) ?? true;
             animationController.animateTo(isLight! ? 0: 0.5);
             context.read<ThemeNotifier>().changeTheme();
           },
