@@ -39,7 +39,7 @@ class _MealListViewState extends State<MealListView> {
             centerTitle: true,
           ),
           body: GridWidgetList(
-            items: context.watch<ModelProvider>().resourcesSearchItem ?? [],
+            items: context.watch<ModelProvider>().resourcesSearchItem,
           ),
         );
       },
@@ -60,20 +60,23 @@ class _NotFoundWidgetState extends State<NotFoundWidget> {
   double opacityLevel = 0.0;
 
   void _changeOpacity() {
-    if(mounted) {
+    if (mounted) {
       setState(() => opacityLevel = opacityLevel == 0 ? 1.0 : 0.0);
     }
   }
+
   @override
   void initState() {
     super.initState();
     Future.delayed(DesignConstants.notFoundDuration, () => _changeOpacity());
   }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        LottieBuilder.network('https://assets1.lottiefiles.com/packages/lf20_snmohqxj/lottie_step2/data.json'),
+        LottieBuilder.network(
+            'https://assets1.lottiefiles.com/packages/lf20_snmohqxj/lottie_step2/data.json'),
         Center(
           child: AnimatedOpacity(
             duration: DesignConstants.notFoundDuration,
@@ -81,8 +84,8 @@ class _NotFoundWidgetState extends State<NotFoundWidget> {
             child: Text(
               LocalConstants.nothingFound,
               style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                fontWeight: FontWeight.normal,
-              ),
+                    fontWeight: FontWeight.normal,
+                  ),
             ),
           ),
         ),
@@ -101,68 +104,68 @@ class GridWidgetList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _items.isNotEmpty ? Column(
-      children: [
-        Expanded(
-          child: Padding(
-            padding: DesignConstants.mediumPaddingAll,
-            child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 200,
-                  childAspectRatio: 5 / 6.5,
-                  crossAxisSpacing: 20,
-                  mainAxisSpacing: 20),
-              itemCount: _items.length,
-              itemBuilder: (BuildContext ctx, index) {
-
-                return SizedBox(
-                  child: InkWell(
-                    onTap: () {
-                      context.router
-                          .push(DetailRoute(id: _items[index].idMeal!));
-                    },
-                    child: Card(
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: DesignConstants.listCardBorderRadius,
-                      ),
-                      child: Column(
-                        children: [
-                          Center(
-                            child: FadeInImage.assetNetwork(
-                              placeholder: AssetConstants.placeholderPinkPath,
-                              image: _items[index].strMealThumb ?? "",
-                              fit: BoxFit.fitHeight,
+    return _items.isNotEmpty
+        ? Column(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: DesignConstants.mediumPaddingAll,
+                  child: GridView.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithMaxCrossAxisExtent(
+                            maxCrossAxisExtent: 200,
+                            childAspectRatio: 5 / 6.5,
+                            crossAxisSpacing: 20,
+                            mainAxisSpacing: 20),
+                    itemCount: _items.length,
+                    itemBuilder: (BuildContext ctx, index) {
+                      return SizedBox(
+                        child: InkWell(
+                          onTap: () {
+                            context.router
+                                .push(DetailRoute(id: _items[index].idMeal!));
+                          },
+                          child: Card(
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  DesignConstants.listCardBorderRadius,
+                            ),
+                            child: Column(
+                              children: [
+                                Center(
+                                  child: FadeInImage.assetNetwork(
+                                    placeholder:
+                                        AssetConstants.placeholderPinkPath,
+                                    image: _items[index].strMealThumb ?? "",
+                                    fit: BoxFit.fitHeight,
+                                  ),
+                                ),
+                                Expanded(
+                                    child: Center(
+                                        child: AutoSizeText(
+                                  _items[index].strMeal ?? "",
+                                  maxLines: 2,
+                                  style: Theme.of(context).textTheme.labelSmall,
+                                  textAlign: TextAlign.center,
+                                ))),
+                              ],
                             ),
                           ),
-                          Expanded(
-                              child: Center(
-                                  child: AutoSizeText(
-                            _items[index].strMeal ?? "",
-                            maxLines: 2,
-                            style: Theme.of(context).textTheme.labelSmall,
-                            textAlign: TextAlign.center,
-                          ))),
-                        ],
-                      ),
-                    ),
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
-            ),
-          ),
-        ),
-      ],
-    ): const Padding(
-      padding: DesignConstants.largePaddingAll,
-      child: Center(
-          child: NotFoundWidget()
-      ),
-    );
+                ),
+              ),
+            ],
+          )
+        : const Padding(
+            padding: DesignConstants.largePaddingAll,
+            child: Center(child: NotFoundWidget()),
+          );
   }
 }
-
-
 
 String renameNormal(String lower) {
   // return replace underscores with spaces and capitalize first letters

@@ -3,7 +3,6 @@ import 'package:meal_recipe_flutter/model/category/category_model.dart';
 import 'package:meal_recipe_flutter/model/area/area_model.dart';
 import 'package:meal_recipe_flutter/model/ingredient/ingredient_model.dart';
 import 'package:meal_recipe_flutter/model/searchItem/search_item_model.dart';
-import 'package:meal_recipe_flutter/product/loading_widget/loadingWidget.dart';
 import 'package:meal_recipe_flutter/service/meal_service.dart';
 
 import '../model/meal/meal_model.dart';
@@ -25,7 +24,8 @@ class ModelProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  ModelProvider(this.mealService, int model, [String type = "", String name =""]) {
+  ModelProvider(this.mealService, int model,
+      [String type = "", String name = ""]) {
     // 0 => all
     // 1 => categories
     // 2 => areas
@@ -54,23 +54,22 @@ class ModelProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> _fetchCategories([load = true])  async {
-    load ?_changeLoading(): null;
+  Future<void> _fetchCategories([load = true]) async {
+    load ? _changeLoading() : null;
     resourcesCategory = (await mealService.fetchCategories())?.categories ?? [];
-    load ?_changeLoading(): null;
-
+    load ? _changeLoading() : null;
   }
 
   Future<void> _fetchAreas([load = true]) async {
-    load ?_changeLoading(): null;
+    load ? _changeLoading() : null;
     resourcesArea = (await mealService.fetchAreas())?.meals ?? [];
-    load ?_changeLoading(): null;
+    load ? _changeLoading() : null;
   }
 
   Future<void> _fetchIngredients([load = true]) async {
-    load ?_changeLoading(): null;
+    load ? _changeLoading() : null;
     resourcesIngredient = (await mealService.fetchIngredients())?.meals ?? [];
-    load ? _changeLoading(): null;
+    load ? _changeLoading() : null;
   }
 
   Future<void> _fetchAll() async {
@@ -85,7 +84,8 @@ class ModelProvider extends ChangeNotifier {
 
   Future<void> _fetchSearchItems(String type, String name) async {
     _changeLoading();
-    resourcesSearchItem = (await mealService.fetchSearchItems(type,name))?.meals ?? [];
+    resourcesSearchItem =
+        (await mealService.fetchSearchItems(type, name))?.meals ?? [];
 
     _changeLoading();
   }
@@ -98,4 +98,3 @@ class ModelProvider extends ChangeNotifier {
     _changeLoading();
   }
 }
-

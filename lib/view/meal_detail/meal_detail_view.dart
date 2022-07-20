@@ -30,99 +30,15 @@ class _DetailViewState extends State<DetailView> {
         return Scaffold(
             body: Center(
           child: CustomScrollView(slivers: [
-            SliverAppBar(
-              pinned: true,
-              floating: false,
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              expandedHeight: MediaQuery.of(context).size.height * 0.5,
-              flexibleSpace: FlexibleSpaceBar(
-                  background: TopImageWidget(
-                imageUrl: context.watch<ModelProvider>().resourcesMeal ?? [],
-              )),
-              actions: [
-                IconButton(
-                  icon: const Icon(Icons.share),
-                  onPressed: () {
-                    _onShare(
-                        context,
-                        Provider.of<ModelProvider>(context, listen: false)
-                            .resourcesMeal[0]
-                            .getShareText(),
-                        Provider.of<ModelProvider>(context, listen: false)
-                            .resourcesMeal[0]
-                            .strMeal!);
-                  },
-                ),
-              ],
-            ),
+            buildSliverAppBar(context),
             SliverList(
                 delegate: SliverChildListDelegate([
-              Card(
-                  child: Column(children: [
-                Center(
-                  child: Text(
-                    '${context.watch<ModelProvider>().resourcesMeal.isNotEmpty ? context.watch<ModelProvider>().resourcesMeal[0].strMeal : ""}',
-                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                        color: Theme.of(context).colorScheme.primary),
-                  ),
-                ),
-                Padding(
-                  padding: DesignConstants.mediumPaddingVertical,
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: DesignConstants.largePaddingLeft,
-                          child: Text(
-                              "${LocalConstants.detailCategory}: ${context.watch<ModelProvider>().resourcesMeal.isNotEmpty ? context.watch<ModelProvider>().resourcesMeal[0].strCategory : ""}",
-                              style: Theme.of(context).textTheme.headlineSmall),
-                        ),
-                        Padding(
-                          padding: DesignConstants.largePaddingRight,
-                          child: Row(
-                            children: [
-                              context
-                                      .watch<ModelProvider>()
-                                      .resourcesMeal
-                                      .isNotEmpty
-                                  ? SizedBox(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.04,
-                                      child: Image.network(countryFlagMap[
-                                              '${context.watch<ModelProvider>().resourcesMeal[0].strArea}'] ??
-                                          ""))
-                                  : Container(),
-                              Text(
-                                  " ${context.watch<ModelProvider>().resourcesMeal.isNotEmpty ? context.watch<ModelProvider>().resourcesMeal[0].strArea : ""}",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headlineSmall),
-                            ],
-                          ),
-                        ),
-                      ]),
-                )
-              ])),
+              const MealInfoWidget(),
               IngredientsWidget(
                 ingredients: context.watch<ModelProvider>().ingList,
                 measures: context.watch<ModelProvider>().measureList,
               ),
-              Card(
-                  child: Column(
-                children: [
-                  Text(
-                    LocalConstants.detailInstructions,
-                    style: Theme.of(context).textTheme.labelMedium,
-                  ),
-                  Padding(
-                    padding: DesignConstants.largePaddingAll,
-                    child: Text(
-                        '${context.watch<ModelProvider>().resourcesMeal.isNotEmpty ? context.watch<ModelProvider>().resourcesMeal[0].strInstructions : ""}',
-                        style: Theme.of(context).textTheme.headlineSmall),
-                  ),
-                ],
-              ))
+              const InstructionsWidget()
             ]))
           ]),
         ));
@@ -132,11 +48,115 @@ class _DetailViewState extends State<DetailView> {
     );
   }
 
+  SliverAppBar buildSliverAppBar(BuildContext context) {
+    return SliverAppBar(
+      pinned: true,
+      floating: false,
+      backgroundColor: Theme.of(context).colorScheme.primary,
+      expandedHeight: MediaQuery.of(context).size.height * 0.5,
+      flexibleSpace: FlexibleSpaceBar(
+          background: TopImageWidget(
+        imageUrl: context.watch<ModelProvider>().resourcesMeal,
+      )),
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.share),
+          onPressed: () {
+            _onShare(
+                context,
+                Provider.of<ModelProvider>(context, listen: false)
+                    .resourcesMeal[0]
+                    .getShareText(),
+                Provider.of<ModelProvider>(context, listen: false)
+                    .resourcesMeal[0]
+                    .strMeal!);
+          },
+        ),
+      ],
+    );
+  }
+
   void _onShare(BuildContext context, String text, String subject) async {
     final box = context.findRenderObject() as RenderBox?;
     await Share.share(text,
         subject: subject,
         sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
+  }
+}
+
+class InstructionsWidget extends StatelessWidget {
+  const InstructionsWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+        child: Column(
+      children: [
+        Text(
+          LocalConstants.detailInstructions,
+          style: Theme.of(context).textTheme.labelMedium,
+        ),
+        Padding(
+          padding: DesignConstants.largePaddingAll,
+          child: Text(
+              '${context.watch<ModelProvider>().resourcesMeal.isNotEmpty ? context.watch<ModelProvider>().resourcesMeal[0].strInstructions : ""}',
+              style: Theme.of(context).textTheme.headlineSmall),
+        ),
+      ],
+    ));
+  }
+}
+
+class MealInfoWidget extends StatelessWidget {
+  const MealInfoWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+        child: Column(children: [
+      Center(
+        child: Text(
+          '${context.watch<ModelProvider>().resourcesMeal.isNotEmpty ? context.watch<ModelProvider>().resourcesMeal[0].strMeal : ""}',
+          style: Theme.of(context)
+              .textTheme
+              .labelMedium
+              ?.copyWith(color: Theme.of(context).colorScheme.primary),
+        ),
+      ),
+      Padding(
+        padding: DesignConstants.mediumPaddingVertical,
+        child:
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          Padding(
+            padding: DesignConstants.largePaddingLeft,
+            child: Text(
+                "${LocalConstants.detailCategory}: ${context.watch<ModelProvider>().resourcesMeal.isNotEmpty ? context.watch<ModelProvider>().resourcesMeal[0].strCategory : ""}",
+                style: Theme.of(context).textTheme.headlineSmall),
+          ),
+          Padding(
+            padding: DesignConstants.largePaddingRight,
+            child: Row(
+              children: [
+                context.watch<ModelProvider>().resourcesMeal.isNotEmpty
+                    ? SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.04,
+                        child: Image.network(countryFlagMap[
+                                '${context.watch<ModelProvider>().resourcesMeal[0].strArea}'] ??
+                            ""))
+                    : Container(),
+                Text(
+                    " ${context.watch<ModelProvider>().resourcesMeal.isNotEmpty ? context.watch<ModelProvider>().resourcesMeal[0].strArea : ""}",
+                    style: Theme.of(context).textTheme.headlineSmall),
+              ],
+            ),
+          ),
+        ]),
+      )
+    ]));
   }
 }
 
