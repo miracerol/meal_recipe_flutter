@@ -60,7 +60,9 @@ class _NotFoundWidgetState extends State<NotFoundWidget> {
   double opacityLevel = 0.0;
 
   void _changeOpacity() {
-    setState(() => opacityLevel = opacityLevel == 0 ? 1.0 : 0.0);
+    if(mounted) {
+      setState(() => opacityLevel = opacityLevel == 0 ? 1.0 : 0.0);
+    }
   }
   @override
   void initState() {
@@ -69,24 +71,22 @@ class _NotFoundWidgetState extends State<NotFoundWidget> {
   }
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Column(
-        children: [
-          LottieBuilder.network('https://assets1.lottiefiles.com/packages/lf20_snmohqxj/lottie_step2/data.json'),
-          Center(
-            child: AnimatedOpacity(
-              duration: DesignConstants.notFoundDuration,
-              opacity: opacityLevel,
-              child: Text(
-                LocalConstants.nothingFound,
-                style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  fontWeight: FontWeight.normal,
-                ),
+    return Column(
+      children: [
+        LottieBuilder.network('https://assets1.lottiefiles.com/packages/lf20_snmohqxj/lottie_step2/data.json'),
+        Center(
+          child: AnimatedOpacity(
+            duration: DesignConstants.notFoundDuration,
+            opacity: opacityLevel,
+            child: Text(
+              LocalConstants.nothingFound,
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                fontWeight: FontWeight.normal,
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

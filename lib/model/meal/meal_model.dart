@@ -309,4 +309,18 @@ class Meals {
     return list;
 
   }
+
+  String getShareText(){
+    String text = "";
+    text += "$strMeal\n";
+    text += "Category: $strCategory\n";
+    text += "Area: $strArea\n\n";
+    text += "Instructions\n$strInstructions\n\n";
+    text += "Ingredients:\n";
+    List<String> ing = getIngAsList();
+    for(int i = 0; i < ing.length; i++){
+      text += "${ing[i]} ${ing[i]}\n";
+    }
+    return text;
+  }
 }

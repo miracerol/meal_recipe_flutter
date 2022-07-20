@@ -4,6 +4,7 @@ import 'package:meal_recipe_flutter/core/constants/design_constants.dart';
 import 'package:meal_recipe_flutter/core/constants/local_constants.dart';
 import 'package:meal_recipe_flutter/model/meal/meal_model.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../core/constants/country_flag_constants.dart';
 import '../../service/meal_service.dart';
@@ -38,6 +39,21 @@ class _DetailViewState extends State<DetailView> {
                   background: TopImageWidget(
                 imageUrl: context.watch<ModelProvider>().resourcesMeal ?? [],
               )),
+              actions: [
+                IconButton(
+                  icon: const Icon(Icons.share),
+                  onPressed: () {
+                    _onShare(
+                        context,
+                        Provider.of<ModelProvider>(context, listen: false)
+                            .resourcesMeal[0]
+                            .getShareText(),
+                        Provider.of<ModelProvider>(context, listen: false)
+                            .resourcesMeal[0]
+                            .strMeal!);
+                  },
+                ),
+              ],
             ),
             SliverList(
                 delegate: SliverChildListDelegate([
@@ -114,6 +130,13 @@ class _DetailViewState extends State<DetailView> {
       value: ModelProvider(MealService(ProjectNetworkManager.instance.service),
           FetchType.meal.value, widget._id),
     );
+  }
+
+  void _onShare(BuildContext context, String text, String subject) async {
+    final box = context.findRenderObject() as RenderBox?;
+    await Share.share(text,
+        subject: subject,
+        sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
   }
 }
 
