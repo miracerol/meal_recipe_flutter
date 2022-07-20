@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:meal_recipe_flutter/core/constants/local_constants.dart';
 import 'package:meal_recipe_flutter/model/searchItem/search_item_model.dart';
 import 'package:meal_recipe_flutter/product/navigator/app_router.dart';
@@ -34,7 +35,7 @@ class _MealListViewState extends State<MealListView> {
           appBar: AppBar(
             title: widget._type != LetterType.typeS.value
                 ? Text(renameNormal(widget._query))
-                : const Text(LocalConstants.listSearch),
+                : Text(widget._query),
             centerTitle: true,
           ),
           body: GridWidgetList(
@@ -48,17 +49,59 @@ class _MealListViewState extends State<MealListView> {
   }
 }
 
+class NotFoundWidget extends StatefulWidget {
+  const NotFoundWidget({Key? key}) : super(key: key);
+
+  @override
+  State<NotFoundWidget> createState() => _NotFoundWidgetState();
+}
+
+class _NotFoundWidgetState extends State<NotFoundWidget> {
+  double opacityLevel = 0.0;
+
+  void _changeOpacity() {
+    setState(() => opacityLevel = opacityLevel == 0 ? 1.0 : 0.0);
+  }
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(DesignConstants.notFoundDuration, () => _changeOpacity());
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Column(
+        children: [
+          LottieBuilder.network('https://assets1.lottiefiles.com/packages/lf20_snmohqxj/lottie_step2/data.json'),
+          Center(
+            child: AnimatedOpacity(
+              duration: DesignConstants.notFoundDuration,
+              opacity: opacityLevel,
+              child: Text(
+                LocalConstants.nothingFound,
+                style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                  fontWeight: FontWeight.normal,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class GridWidgetList extends StatelessWidget {
   const GridWidgetList({
     required List<ItemS> items,
     Key? key,
   })  : _items = items,
         super(key: key);
-  final _items;
+  final List<ItemS> _items;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return _items.isNotEmpty ? Column(
       children: [
         Expanded(
           child: Padding(
@@ -76,7 +119,7 @@ class GridWidgetList extends StatelessWidget {
                   child: InkWell(
                     onTap: () {
                       context.router
-                          .push(DetailRoute(id: _items[index].idMeal));
+                          .push(DetailRoute(id: _items[index].idMeal!));
                     },
                     child: Card(
                       clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -110,9 +153,16 @@ class GridWidgetList extends StatelessWidget {
           ),
         ),
       ],
+    ): const Padding(
+      padding: DesignConstants.largePaddingAll,
+      child: Center(
+          child: NotFoundWidget()
+      ),
     );
   }
 }
+
+
 
 String renameNormal(String lower) {
   // return replace underscores with spaces and capitalize first letters

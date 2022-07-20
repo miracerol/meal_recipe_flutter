@@ -16,4 +16,5 @@ class DesignConstants {
   static const mediumPaddingBottom = EdgeInsets.only(bottom: 10.0);
 
   static const themeDuration = Duration(seconds: 1);
+  static const notFoundDuration = Duration(seconds: 2);
 }

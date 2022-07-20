@@ -83,6 +83,14 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
         child: Center(
           child: TextField(
             controller: textEditingController,
+            onSubmitted: (query){
+              if(query.isNotEmpty){
+                textEditingController.clear();
+                context.router.push(MealListRoute(
+                    type: LetterType.typeS.value,
+                    query: query));
+              }
+            },
             decoration: InputDecoration(
                 prefixIcon: const Icon(Icons.search),
                 suffixIcon: IconButton(

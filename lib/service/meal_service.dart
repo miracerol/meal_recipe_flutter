@@ -65,9 +65,10 @@ class MealService extends IMealService{
 
   @override
   Future<SearchItem?> fetchSearchItems(String type, String name) async{
-    final endpoint = type != LetterType.typeS.value ? '$type=$name': 'search.php?s=$name';
-    const sss = 'search.php?s=Arrabiata';
-    final response = await dio.get('${ApiConstants.apiSearch}$endpoint');
+    final endpoint = type != LetterType.typeS.value ? '${ApiConstants.apiFilter}$type=$name': '${ApiConstants.apiSearch}$name';
+
+    final response = await dio.get(endpoint);
+
     if (response.statusCode == HttpStatus.ok) {
       final jsonBody = response.data;
       if (jsonBody is Map<String, dynamic>) {

@@ -86,7 +86,7 @@ class ModelProvider extends ChangeNotifier {
   Future<void> _fetchSearchItems(String type, String name) async {
     _changeLoading();
     resourcesSearchItem = (await mealService.fetchSearchItems(type,name))?.meals ?? [];
-    print(resourcesSearchItem);
+
     _changeLoading();
   }
 
