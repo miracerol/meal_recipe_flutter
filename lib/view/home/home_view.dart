@@ -16,6 +16,7 @@ import 'package:provider/provider.dart';
 
 import '../../core/constants/country_flag_constants.dart';
 import '../../model/area/area_model.dart';
+import '../../model/meal/meal_model.dart';
 import '../../service/meal_service.dart';
 import '../../service/network_manager.dart';
 import '../../viewModel/model_provider.dart';
@@ -29,6 +30,7 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
   late AnimationController animationController;
+
   @override
   void initState() {
     super.initState();
@@ -36,7 +38,10 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
       vsync: this,
       duration: DesignConstants.themeDuration,
     );
-    animationController.animateTo(SharedPrefs.instance.prefs.getBool(AppConstants.themeSP) ?? true  ? 0.5 : 0);
+    animationController.animateTo(
+        SharedPrefs.instance.prefs.getBool(AppConstants.themeSP) ?? true
+            ? 0.5
+            : 0);
   }
 
   @override
@@ -50,22 +55,36 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
             appBar: buildAppBar(textEditingController),
             body: context.watch<ModelProvider>().isLoading
                 ? const LoadingWidget()
-                : Column(
-                    children: [
-                      HorizontalList(
-                        title: LocalConstants.categories,
-                        items: context.watch<ModelProvider>().resourcesCategory,
-                      ),
-                      HorizontalList(
-                        title: LocalConstants.area,
-                        items: context.watch<ModelProvider>().resourcesArea,
-                      ),
-                      HomeSmallList(
-                        title: LocalConstants.ingredients,
-                        items:
-                            context.watch<ModelProvider>().resourcesIngredient,
-                      )
-                    ],
+                : SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        HorizontalList(
+                          title: LocalConstants.categories,
+                          items:
+                              context.watch<ModelProvider>().resourcesCategory,
+                        ),
+                        HorizontalList(
+                          title: LocalConstants.area,
+                          items: context.watch<ModelProvider>().resourcesArea,
+                        ),
+                        SharedPrefs.instance.prefs
+                                .getStringList(AppConstants.favoritesSP)!
+                                .isNotEmpty
+                            ? HorizontalList(
+                                title: LocalConstants.favorites,
+                                items: context
+                                    .watch<ModelProvider>()
+                                    .resourcesFavoriteMeal,
+                              )
+                            : const SizedBox(),
+                        HomeSmallList(
+                          title: LocalConstants.ingredients,
+                          items: context
+                              .watch<ModelProvider>()
+                              .resourcesIngredient,
+                        ),
+                      ],
+                    ),
                   ));
       },
       value: ModelProvider(MealService(ProjectNetworkManager.instance.service),
@@ -83,12 +102,11 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
         child: Center(
           child: TextField(
             controller: textEditingController,
-            onSubmitted: (query){
-              if(query.isNotEmpty){
+            onSubmitted: (query) {
+              if (query.isNotEmpty) {
                 textEditingController.clear();
-                context.router.push(MealListRoute(
-                    type: LetterType.typeS.value,
-                    query: query));
+                context.router.push(
+                    MealListRoute(type: LetterType.typeS.value, query: query));
               }
             },
             decoration: InputDecoration(
@@ -106,9 +124,11 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
       ),
       actions: [
         InkWell(
-          onTap: (){
-            var isLight = SharedPrefs.instance.prefs.getBool(AppConstants.themeSP) ?? true;
-            animationController.animateTo(isLight! ? 0: 0.5);
+          onTap: () {
+            var isLight =
+                SharedPrefs.instance.prefs.getBool(AppConstants.themeSP) ??
+                    true;
+            animationController.animateTo(isLight ? 0 : 0.5);
             context.read<ThemeNotifier>().changeTheme();
           },
           child: LottieBuilder.asset(AssetConstants.themeSwitchPath,
@@ -139,8 +159,8 @@ class HomeSmallList extends StatefulWidget {
 class _HomeSmallListState extends State<HomeSmallList> {
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      flex: 2,
+    return SizedBox(
+      height: 150,
       child: Column(
         children: [
           HomeTitle(title: widget._title),
@@ -201,8 +221,12 @@ class HorizontalList extends StatefulWidget {
 class _HorizontalListState extends State<HorizontalList> {
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      flex: 3,
+    return SizedBox(
+      height: widget._title == LocalConstants.categories
+          ? 220
+          : widget._title == LocalConstants.area
+              ? 180
+              : 240,
       child: Column(
         children: [
           HomeTitle(title: widget._title),
@@ -212,52 +236,84 @@ class _HorizontalListState extends State<HorizontalList> {
               itemCount: widget.itemList.length,
               itemBuilder: (context, index) {
                 return SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.3,
-                  child: InkWell(
-                    onTap: () {
-                      context.router.push(MealListRoute(
-                          type: widget.itemList[index] is Categories
-                              ? LetterType.typeC.value
-                              : LetterType.typeA.value,
-                          query: widget.itemList[index] is Categories
-                              ? widget.itemList[index].strCategory
-                              : widget.itemList[index].strArea));
-                    },
-                    child: Card(
-                        clipBehavior: Clip.antiAliasWithSaveLayer,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: DesignConstants.homeCardBorderRadius,
-                        ),
-                        child: Column(
-                          children: [
-                            FadeInImage.assetNetwork(
-                              placeholder: AssetConstants.placeholderPinkPath,
-                              image: widget.itemList[index] is Categories
-                                  ? widget.itemList[index].strCategoryThumb
-                                  : countryFlagMap[
-                                      widget.itemList[index].strArea],
-                              fit: BoxFit.fitWidth,
+                  width: widget._title == LocalConstants.favorites
+                      ? 135
+                      : widget._title == LocalConstants.area
+                          ? 100
+                          : 135,
+                  // width: MediaQuery.of(context).size.width * 0.3,
+                  child: Wrap(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          widget.itemList[index] is Meals
+                              ? context.router.push(DetailRoute(
+                                  id: widget.itemList[index].idMeal!))
+                              : context.router.push(MealListRoute(
+                                  type: widget.itemList[index] is Categories
+                                      ? LetterType.typeC.value
+                                      : LetterType.typeA.value,
+                                  query: widget.itemList[index] is Categories
+                                      ? widget.itemList[index].strCategory
+                                      : widget.itemList[index].strArea));
+                        },
+                        child: Card(
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  DesignConstants.homeCardBorderRadius,
                             ),
-                            Expanded(
-                              child: Padding(
-                                padding: DesignConstants.verySmallPaddingAll,
-                                child: Center(
-                                  child: AutoSizeText(
-                                    widget.itemList[index] is Categories
-                                        ? widget.itemList[index].strCategory
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                children: [
+                                  FadeInImage.assetNetwork(
+                                    height: widget.itemList[index] is MealsA
+                                        ? 64
+                                        : 100,
+                                    width: widget.itemList[index] is MealsA
+                                        ? 100
+                                        : 100,
+                                    placeholder:
+                                        AssetConstants.placeholderPinkPath,
+                                    image: widget.itemList[index] is Categories
+                                        ? widget
+                                            .itemList[index].strCategoryThumb
                                         : widget.itemList[index] is MealsA
-                                            ? widget.itemList[index].strArea ??
-                                                ""
-                                            : "",
-                                    style:
-                                        Theme.of(context).textTheme.labelSmall,
-                                    maxLines: 2,
+                                            ? countryFlagMap[
+                                                widget.itemList[index].strArea]
+                                            : widget
+                                                .itemList[index].strMealThumb,
+                                    fit: widget.itemList[index] is MealsA
+                                        ? BoxFit.fitHeight
+                                        : BoxFit.fitWidth,
                                   ),
-                                ),
+                                  Padding(
+                                    padding:
+                                        DesignConstants.verySmallPaddingAll,
+                                    child: Center(
+                                      child: AutoSizeText(
+                                        widget.itemList[index] is Categories
+                                            ? widget.itemList[index].strCategory
+                                            : widget.itemList[index] is MealsA
+                                                ? widget.itemList[index]
+                                                        .strArea ??
+                                                    ""
+                                                : widget
+                                                    .itemList[index].strMeal,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelSmall,
+                                        maxLines: 2,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  )
+                                ],
                               ),
-                            )
-                          ],
-                        )),
+                            )),
+                      ),
+                    ],
                   ),
                 );
               },

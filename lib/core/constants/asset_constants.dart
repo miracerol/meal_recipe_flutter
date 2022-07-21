@@ -5,5 +5,6 @@ class AssetConstants {
   static const String themeSwitchPath = 'assets/lottie/theme_switch.json';
   static const String placeholderPath = 'assets/image/png/img_placeholder.png';
   static const String notFoundPath = 'assets/lottie/not_found.json';
+  static const String notFoundURL = 'https://assets1.lottiefiles.com/packages/lf20_snmohqxj/lottie_step2/data.json';
 
 }

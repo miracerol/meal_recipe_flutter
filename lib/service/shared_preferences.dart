@@ -1,4 +1,5 @@
 
+import 'package:meal_recipe_flutter/core/constants/app_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefs{
@@ -13,6 +14,9 @@ class SharedPrefs{
   }
   static Future createInstance() async {
     _prefs = await SharedPreferences.getInstance();
+    _prefs.containsKey(AppConstants.themeSP) ? null : _prefs.setBool(AppConstants.themeSP, false);
+    _prefs.containsKey(AppConstants.favoritesSP) ? null : _prefs.setStringList(AppConstants.favoritesSP, []);
+
     return;
   }
 

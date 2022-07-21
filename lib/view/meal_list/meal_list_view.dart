@@ -75,8 +75,7 @@ class _NotFoundWidgetState extends State<NotFoundWidget> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        LottieBuilder.network(
-            'https://assets1.lottiefiles.com/packages/lf20_snmohqxj/lottie_step2/data.json'),
+        LottieBuilder.network(AssetConstants.notFoundURL),
         Center(
           child: AnimatedOpacity(
             duration: DesignConstants.notFoundDuration,

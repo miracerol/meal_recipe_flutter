@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:meal_recipe_flutter/core/constants/app_constants.dart';
 import 'package:meal_recipe_flutter/core/constants/asset_constants.dart';
 import 'package:meal_recipe_flutter/core/constants/design_constants.dart';
 import 'package:meal_recipe_flutter/core/constants/local_constants.dart';
+import 'package:meal_recipe_flutter/core/theme/app_theme.dart';
 import 'package:meal_recipe_flutter/model/meal/meal_model.dart';
+import 'package:meal_recipe_flutter/service/shared_preferences.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -49,6 +52,7 @@ class _DetailViewState extends State<DetailView> {
   }
 
   SliverAppBar buildSliverAppBar(BuildContext context) {
+    var isFavorite = SharedPrefs.instance.prefs.getStringList(AppConstants.favoritesSP)!.contains(widget._id);
     return SliverAppBar(
       pinned: true,
       floating: false,
@@ -59,6 +63,27 @@ class _DetailViewState extends State<DetailView> {
         imageUrl: context.watch<ModelProvider>().resourcesMeal,
       )),
       actions: [
+        // favorite button
+        IconButton(
+          icon: Icon(
+            Icons.favorite,
+            color: isFavorite
+                ? Colors.white
+                : ColorPalette.eerieBlack,
+          ),
+          onPressed: () {
+            var list = SharedPrefs.instance.prefs.getStringList(AppConstants.favoritesSP)!;
+            if (list.contains(widget._id)) {
+              list.remove(widget._id);
+              SharedPrefs.instance.prefs.setStringList(AppConstants.favoritesSP, list);
+              setState(() {isFavorite = false;});
+            } else {
+              list.add(widget._id);
+              SharedPrefs.instance.prefs.setStringList(AppConstants.favoritesSP, list);
+              setState(() {isFavorite = true;});
+            }
+          },
+        ),
         IconButton(
           icon: const Icon(Icons.share),
           onPressed: () {

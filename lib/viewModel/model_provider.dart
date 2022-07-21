@@ -4,7 +4,9 @@ import 'package:meal_recipe_flutter/model/area/area_model.dart';
 import 'package:meal_recipe_flutter/model/ingredient/ingredient_model.dart';
 import 'package:meal_recipe_flutter/model/searchItem/search_item_model.dart';
 import 'package:meal_recipe_flutter/service/meal_service.dart';
+import 'package:meal_recipe_flutter/service/shared_preferences.dart';
 
+import '../core/constants/app_constants.dart';
 import '../model/meal/meal_model.dart';
 
 class ModelProvider extends ChangeNotifier {
@@ -14,6 +16,7 @@ class ModelProvider extends ChangeNotifier {
   List<MealsI> resourcesIngredient = [];
   List<ItemS> resourcesSearchItem = [];
   List<Meals> resourcesMeal = [];
+  List<Meals> resourcesFavoriteMeal = [];
   List<String> ingList = [];
   List<String> measureList = [];
   bool isLoading = false;
@@ -78,6 +81,7 @@ class ModelProvider extends ChangeNotifier {
     await _fetchCategories(false);
     await _fetchAreas(false);
     await _fetchIngredients(false);
+    await _fetchFavorites();
 
     _changeLoading();
   }
@@ -96,5 +100,20 @@ class ModelProvider extends ChangeNotifier {
     ingList = resourcesMeal[0].getIngAsList();
     measureList = resourcesMeal[0].getMeasureAsList();
     _changeLoading();
+  }
+
+  Future<void> _fetchFavorites() async {
+    resourcesFavoriteMeal = [];
+
+    final favorites =
+        SharedPrefs.instance.prefs.getStringList(AppConstants.favoritesSP);
+    if (favorites != null) {
+      for (var i = 0; i < favorites.length; i++) {
+        var mealF = await mealService.fetchMeal(favorites[i]);
+        if (mealF != null) {
+          resourcesFavoriteMeal.add(mealF.meals![0]);
+        }
+      }
+    }
   }
 }
