@@ -34,6 +34,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+
     animationController = AnimationController(
       vsync: this,
       duration: DesignConstants.themeDuration,
@@ -45,12 +46,12 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
   }
 
   @override
-  @override
   Widget build(BuildContext context) {
     var textEditingController = TextEditingController();
     return ChangeNotifierProvider<ModelProvider>.value(
       builder: (context, child) {
         return Scaffold(
+
             resizeToAvoidBottomInset: false,
             appBar: buildAppBar(textEditingController),
             body: context.watch<ModelProvider>().isLoading
@@ -67,16 +68,12 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                           title: LocalConstants.area,
                           items: context.watch<ModelProvider>().resourcesArea,
                         ),
-                        SharedPrefs.instance.prefs
-                                .getStringList(AppConstants.favoritesSP)!
-                                .isNotEmpty
-                            ? HorizontalList(
-                                title: LocalConstants.favorites,
-                                items: context
-                                    .watch<ModelProvider>()
-                                    .resourcesFavoriteMeal,
-                              )
-                            : const SizedBox(),
+                        HorizontalList(
+                          title: LocalConstants.favorites,
+                          items: context
+                              .watch<ModelProvider>()
+                              .resourcesFavoriteMeal,
+                        ),
                         HomeSmallList(
                           title: LocalConstants.ingredients,
                           items: context
@@ -202,7 +199,7 @@ class _HomeSmallListState extends State<HomeSmallList> {
 }
 
 class HorizontalList extends StatefulWidget {
-  const HorizontalList({
+  HorizontalList({
     required String title,
     required List<dynamic> items,
     Key? key,
@@ -212,7 +209,8 @@ class HorizontalList extends StatefulWidget {
           key: key,
         );
   final String _title;
-  final List<dynamic> itemList;
+  List<dynamic> itemList;
+
 
   @override
   State<HorizontalList> createState() => _HorizontalListState();
@@ -230,6 +228,7 @@ class _HorizontalListState extends State<HorizontalList> {
       child: Column(
         children: [
           HomeTitle(title: widget._title),
+
           Expanded(
             child: ListView.builder(
               scrollDirection: Axis.horizontal,

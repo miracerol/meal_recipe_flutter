@@ -64,25 +64,32 @@ class _DetailViewState extends State<DetailView> {
       )),
       actions: [
         // favorite button
-        IconButton(
-          icon: Icon(
-            Icons.favorite,
-            color: isFavorite
-                ? Colors.white
-                : ColorPalette.eerieBlack,
-          ),
-          onPressed: () {
-            var list = SharedPrefs.instance.prefs.getStringList(AppConstants.favoritesSP)!;
-            if (list.contains(widget._id)) {
-              list.remove(widget._id);
-              SharedPrefs.instance.prefs.setStringList(AppConstants.favoritesSP, list);
-              setState(() {isFavorite = false;});
-            } else {
-              list.add(widget._id);
-              SharedPrefs.instance.prefs.setStringList(AppConstants.favoritesSP, list);
-              setState(() {isFavorite = true;});
-            }
-          },
+        StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+          return IconButton(
+            icon: Icon(
+              Icons.favorite,
+              color: isFavorite
+                  ? Colors.white
+                  : ColorPalette.eerieBlack,
+            ),
+            onPressed: () {
+              var list = SharedPrefs.instance.prefs.getStringList(AppConstants.favoritesSP)!;
+              if (list.contains(widget._id)) {
+                list.remove(widget._id);
+                SharedPrefs.instance.prefs.setStringList(AppConstants.favoritesSP, list);
+                setState(() {isFavorite = false;});
+
+
+
+              } else {
+                list.add(widget._id);
+                SharedPrefs.instance.prefs.setStringList(AppConstants.favoritesSP, list);
+                setState(() {isFavorite = true;});
+
+              }
+            },
+          );},
         ),
         IconButton(
           icon: const Icon(Icons.share),

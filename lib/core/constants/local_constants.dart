@@ -9,4 +9,5 @@ class LocalConstants {
   static const String detailIngredients = 'Ingredients';
   static const String listSearch = 'Search';
   static const String nothingFound = 'Nothing Found';
+
 }
