@@ -68,12 +68,13 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                           title: LocalConstants.area,
                           items: context.watch<ModelProvider>().resourcesArea,
                         ),
-                        HorizontalList(
+                        SharedPrefs.instance.prefs.getStringList(AppConstants.favoritesSP)!.isNotEmpty
+                            ? HorizontalList(
                           title: LocalConstants.favorites,
                           items: context
                               .watch<ModelProvider>()
                               .resourcesFavoriteMeal,
-                        ),
+                        ): Container(),
                         HomeSmallList(
                           title: LocalConstants.ingredients,
                           items: context

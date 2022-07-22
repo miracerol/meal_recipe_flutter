@@ -1,6 +1,6 @@
-# meal_recipe_flutter
+# Meal Recipe Flutter
 
-A new Flutter project.
+A sample recipe application developed with Flutter.
 
 ## Getting Started
 
