@@ -2,9 +2,25 @@
 
 A sample recipe application developed with Flutter.
 
+![Alt Text](https://i.hizliresim.com/c3hvogw.gif)
+
+## Features
+Theme Switcher - Light/Dark Mode
+
+Search
+
+Filter by category, area and ingredient
+
+Share the recipe
+
+Favorite the recipe
+
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
+
+That made with [TheMealDB API ](https://www.themealdb.com/api.php)
 
 A few resources to get you started if this is your first Flutter project:
 
